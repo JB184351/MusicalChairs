@@ -11,7 +11,7 @@ import MediaPlayer
 struct ContentView: View {
     @State private var playState: PlayState = .play
     @State private var volume: Double = 0
-    @State private var songTimer: Double = 0
+    @State private var songTimer: Int = 30
     @State private var ifDeviceIsConnected = false
     
     var playPauseImage: String {
@@ -59,56 +59,35 @@ struct ContentView: View {
             // Album Title
             Text("The Maybe Man")
                 .font(.caption)
-        
+            
+            // Song Timer
+            Text("\(songTimer) seconds remaining")
+                .fontWeight(.light)
+                .padding()
+            
             // Volume Slider Control
             HStack {
                 Image(systemName: "speaker")
                 Slider(value: $volume, in: 0...100)
-                    .tint(.white)
+                    .tint(.indigo)
                 Image(systemName: speakerImage)
             }
-            
-            HStack {
-                // Go Back a song or something Button
-                Button(action: {
-                    print("Go back a song or somethin'")
-                }) {
-                    Image(systemName: "backward")
+            // Play/Pause Button
+            Button(action: {
+                if playState == .play {
+                    playState = .pause
+                } else {
+                    playState = .play
                 }
-                .padding()
-                .foregroundStyle(.white)
-                .font(.title2)
-                
-                // Play/Pause Button
-                Button(action: {
-                    if playState == .play {
-                        playState = .pause
-                    } else {
-                        playState = .play
-                    }
-                }, label: {
-                    Image(systemName: playPauseImage)
-                })
-                .padding()
-                .foregroundStyle(.white)
-                .font(.largeTitle)
-                
-                // Go Forward a song or something button
-                Button(action: {
-                    print("Go forward or somethin'")
-                }, label: {
-                    Image(systemName: "forward")
-                })
-                .padding()
-                .foregroundStyle(.white)
-                .font(.title2)
-            }
+            }, label: {
+                Image(systemName: playPauseImage)
+            })
+            .padding()
+            .foregroundStyle(.secondary)
+            .font(.largeTitle)
             
             Image(systemName: airplayImage)
                 .font(ifDeviceIsConnected ? .largeTitle : .title3)
-            
-            
-            
         }
         .padding()
     }

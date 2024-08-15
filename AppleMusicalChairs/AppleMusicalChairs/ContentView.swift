@@ -96,6 +96,8 @@ struct ContentView: View {
                 
                 if roundTimer > 0 && songTimer == 0 {
                     roundTimer -= 1
+                } else if roundTimer == 0 {
+                    songTimer = 30
                 }
             })
             .onChange(of: scenePhase) { oldValue, newValue in

@@ -12,7 +12,13 @@ struct ContentView: View {
     @State private var playState: PlayState = .play
     @State private var volume: Double = 0
     @State private var songTimer: Int = 30
+    @State private var roundTimer: Int = 8
+    
     @State private var ifDeviceIsConnected = false
+    @Environment(\.scenePhase) var scenePhase
+    @State private var isTimerActive = true
+    
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     var playPauseImage: String {
         switch playState {
@@ -46,7 +52,6 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            
             // Album Cover
             Image(.maybeMan)
                 .resizable()
@@ -61,9 +66,45 @@ struct ContentView: View {
                 .font(.caption)
             
             // Song Timer
-            Text("\(songTimer) seconds remaining")
-                .fontWeight(.light)
-                .padding()
+            ZStack {
+                Text("\(songTimer) seconds remaining")
+                    .fontWeight(.light)
+                    .padding()
+            }
+            .onReceive(timer, perform: { time in
+                guard isTimerActive else { return }
+                
+                if songTimer > 0 {
+                    songTimer -= 1
+                }
+            })
+            .onChange(of: scenePhase) { oldValue, newValue in
+                if scenePhase == .active {
+                    isTimerActive = true
+                } else {
+                    isTimerActive = false
+                }
+            }
+            
+            ZStack {
+                Text("Next round starts in \(roundTimer) seconds")
+                    .fontWeight(.light)
+                    .padding()
+            }
+            .onReceive(timer, perform: { time in
+                guard isTimerActive else { return }
+                
+                if roundTimer > 0 && songTimer == 0 {
+                    roundTimer -= 1
+                }
+            })
+            .onChange(of: scenePhase) { oldValue, newValue in
+                if scenePhase == .active {
+                    isTimerActive = true
+                } else {
+                    isTimerActive = false
+                }
+            }
             
             // Volume Slider Control
             HStack {

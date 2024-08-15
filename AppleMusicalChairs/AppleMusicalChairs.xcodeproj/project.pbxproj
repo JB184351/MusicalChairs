@@ -11,6 +11,8 @@
 		30599DB32C6C15E100842A96 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DB22C6C15E100842A96 /* ContentView.swift */; };
 		30599DB52C6C15E200842A96 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30599DB42C6C15E200842A96 /* Assets.xcassets */; };
 		30599DB82C6C15E200842A96 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30599DB72C6C15E200842A96 /* Preview Assets.xcassets */; };
+		30599DBF2C6C201400842A96 /* PlayState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DBE2C6C201400842A96 /* PlayState.swift */; };
+		30599DC12C6D5C4D00842A96 /* VolumeSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DC02C6D5C4D00842A96 /* VolumeSliderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +21,8 @@
 		30599DB22C6C15E100842A96 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		30599DB42C6C15E200842A96 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		30599DB72C6C15E200842A96 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		30599DBE2C6C201400842A96 /* PlayState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayState.swift; sourceTree = "<group>"; };
+		30599DC02C6D5C4D00842A96 /* VolumeSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeSliderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +57,8 @@
 			children = (
 				30599DB02C6C15E100842A96 /* AppleMusicalChairsApp.swift */,
 				30599DB22C6C15E100842A96 /* ContentView.swift */,
+				30599DC02C6D5C4D00842A96 /* VolumeSliderView.swift */,
+				30599DBE2C6C201400842A96 /* PlayState.swift */,
 				30599DB42C6C15E200842A96 /* Assets.xcassets */,
 				30599DB62C6C15E200842A96 /* Preview Content */,
 			);
@@ -139,6 +145,8 @@
 			files = (
 				30599DB32C6C15E100842A96 /* ContentView.swift in Sources */,
 				30599DB12C6C15E100842A96 /* AppleMusicalChairsApp.swift in Sources */,
+				30599DBF2C6C201400842A96 /* PlayState.swift in Sources */,
+				30599DC12C6D5C4D00842A96 /* VolumeSliderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

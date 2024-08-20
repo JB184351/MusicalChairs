@@ -13,6 +13,9 @@
 		30599DB82C6C15E200842A96 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30599DB72C6C15E200842A96 /* Preview Assets.xcassets */; };
 		30599DBF2C6C201400842A96 /* PlayState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DBE2C6C201400842A96 /* PlayState.swift */; };
 		30599DC12C6D5C4D00842A96 /* VolumeSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DC02C6D5C4D00842A96 /* VolumeSliderView.swift */; };
+		30599DC32C6FE4ED00842A96 /* PlayBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DC22C6FE4ED00842A96 /* PlayBackView.swift */; };
+		30599DC52C6FE7AE00842A96 /* PlaylistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DC42C6FE7AE00842A96 /* PlaylistView.swift */; };
+		30599DC72C6FF68A00842A96 /* AppleMusicPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DC62C6FF68A00842A96 /* AppleMusicPermissionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +26,9 @@
 		30599DB72C6C15E200842A96 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		30599DBE2C6C201400842A96 /* PlayState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayState.swift; sourceTree = "<group>"; };
 		30599DC02C6D5C4D00842A96 /* VolumeSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeSliderView.swift; sourceTree = "<group>"; };
+		30599DC22C6FE4ED00842A96 /* PlayBackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayBackView.swift; sourceTree = "<group>"; };
+		30599DC42C6FE7AE00842A96 /* PlaylistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistView.swift; sourceTree = "<group>"; };
+		30599DC62C6FF68A00842A96 /* AppleMusicPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusicPermissionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +63,9 @@
 			children = (
 				30599DB02C6C15E100842A96 /* AppleMusicalChairsApp.swift */,
 				30599DB22C6C15E100842A96 /* ContentView.swift */,
+				30599DC62C6FF68A00842A96 /* AppleMusicPermissionView.swift */,
+				30599DC42C6FE7AE00842A96 /* PlaylistView.swift */,
+				30599DC22C6FE4ED00842A96 /* PlayBackView.swift */,
 				30599DC02C6D5C4D00842A96 /* VolumeSliderView.swift */,
 				30599DBE2C6C201400842A96 /* PlayState.swift */,
 				30599DB42C6C15E200842A96 /* Assets.xcassets */,
@@ -143,10 +152,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30599DC52C6FE7AE00842A96 /* PlaylistView.swift in Sources */,
 				30599DB32C6C15E100842A96 /* ContentView.swift in Sources */,
+				30599DC72C6FF68A00842A96 /* AppleMusicPermissionView.swift in Sources */,
 				30599DB12C6C15E100842A96 /* AppleMusicalChairsApp.swift in Sources */,
 				30599DBF2C6C201400842A96 /* PlayState.swift in Sources */,
 				30599DC12C6D5C4D00842A96 /* VolumeSliderView.swift in Sources */,
+				30599DC32C6FE4ED00842A96 /* PlayBackView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,6 +295,7 @@
 				DEVELOPMENT_TEAM = H9AZCNDQS4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Need your playlists to play musical chairs!";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -312,6 +325,7 @@
 				DEVELOPMENT_TEAM = H9AZCNDQS4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Need your playlists to play musical chairs!";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

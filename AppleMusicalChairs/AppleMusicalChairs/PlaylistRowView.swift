@@ -14,7 +14,13 @@ struct PlaylistRowView: View {
     
     var body: some View {
         HStack {
-            AsyncImage(url: playlist.artwork?.url(width: 100, height: 100))
+            if playlist.artwork != nil {
+                AsyncImage(url: playlist.artwork?.url(width: 100, height: 100))
+            } else {
+                Image(systemName: "music.note.list")
+                    .resizable()
+                    .frame(width: 100, height: 100)
+            }
             
             Text(playlist.name)
         }

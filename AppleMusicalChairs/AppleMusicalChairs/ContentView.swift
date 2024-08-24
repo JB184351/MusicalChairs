@@ -14,6 +14,7 @@ struct ContentView: View {
     @State var musicAuthorizationStatus: MusicAuthorization.Status
     @State private var arePlaylistsShowing = false
     @State var playlists = [Playlist]()
+    
     @State private var selection: Playlist? = nil
     @State private var isPlaylistSheetShowing = false
     
@@ -22,19 +23,7 @@ struct ContentView: View {
             if musicAuthorizationStatus == .authorized {
                 NavigationStack {
                     List(playlists, id: \.self, selection: $selection) { playlist in
-                        PlaylistView(playlist: playlist)
-                    }
-                    .onChange(of: selection) { oldValue, newValue in
-                        if newValue != nil {
-                            isPlaylistSheetShowing = true
-                        }
-                    }
-                    .sheet(isPresented: $isPlaylistSheetShowing, onDismiss: {
-                        selection = nil
-                    }) {
-                        if let selection {
-                            PlaylistView(playlist: selection)
-                        }
+                        PlaylistRowView(playlist: playlist)
                     }
                     .listStyle(.plain)
                     .navigationTitle("Playlists")
@@ -42,7 +31,7 @@ struct ContentView: View {
                         if playlists.isEmpty {
                             ContentUnavailableView
                                 .init {
-                                    Text("Playlists")
+                                    Text("Playlists loading...")
                                 }
                         }
                     }
@@ -52,7 +41,7 @@ struct ContentView: View {
             }
         }
         .task {
-            checkAuthorization()
+            await checkAuthorization()
             
             if musicAuthorizationStatus == .authorized {
                 await loadPlaylists()
@@ -67,7 +56,7 @@ struct ContentView: View {
     }
     
     @MainActor
-    private func update(with musicAutoriztionStatus: MusicAuthorization.Status) {
+    private func update(with musicAuthorizationStatus: MusicAuthorization.Status) {
         withAnimation {
             self.musicAuthorizationStatus = musicAuthorizationStatus
         }
@@ -81,13 +70,11 @@ struct ContentView: View {
     }
     
     @MainActor
-    private func checkAuthorization() {
+    private func checkAuthorization() async {
         switch musicAuthorizationStatus {
         case .notDetermined:
-            Task {
-                let musicAuthorizationStatus = await MusicAuthorization.request()
-                update(with: musicAuthorizationStatus)
-            }
+            let musicAuthorizationStatus = await MusicAuthorization.request()
+            update(with: musicAuthorizationStatus)
         case .denied:
             if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
                 openURL(settingsURL)
@@ -101,18 +88,17 @@ struct ContentView: View {
     
     @MainActor
     private func loadPlaylists() async {
-        Task {
-            do {
-                let url = URL(string: "https://api.music.apple.com/v1/me/library/playlists")!
-                let libraryPlaylistRequest = MusicDataRequest(urlRequest: URLRequest(url: url))
-                let libraryPlaylistResponse = try await libraryPlaylistRequest.response()
-                
-                let decoder = JSONDecoder()
-                let libraryPlaylists = try decoder.decode(MusicItemCollection<Playlist>.self, from: libraryPlaylistResponse.data)
-                setPlaylists(libraryPlaylists)
-            } catch {
-                print(error.localizedDescription)
-            }
+        do {
+            let url = URL(string: "https://api.music.apple.com/v1/me/library/playlists")!
+            let libraryPlaylistRequest = MusicDataRequest(urlRequest: URLRequest(url: url))
+            let libraryPlaylistResponse = try await libraryPlaylistRequest.response()
+            
+            let decoder = JSONDecoder()
+            let libraryPlaylists = try decoder.decode(MusicItemCollection<Playlist>.self, from: libraryPlaylistResponse.data)
+            setPlaylists(libraryPlaylists)
+        } catch {
+            print(error.localizedDescription)
+            setPlaylists(MusicItemCollection<Playlist>())
         }
     }
 }

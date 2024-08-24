@@ -8,7 +8,7 @@
 import SwiftUI
 import MusicKit
 
-struct PlaylistView: View {
+struct PlaylistRowView: View {
     
     var playlist: Playlist
     

@@ -14,7 +14,7 @@
 		30599DBF2C6C201400842A96 /* PlayState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DBE2C6C201400842A96 /* PlayState.swift */; };
 		30599DC12C6D5C4D00842A96 /* VolumeSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DC02C6D5C4D00842A96 /* VolumeSliderView.swift */; };
 		30599DC32C6FE4ED00842A96 /* PlayBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DC22C6FE4ED00842A96 /* PlayBackView.swift */; };
-		30599DC52C6FE7AE00842A96 /* PlaylistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DC42C6FE7AE00842A96 /* PlaylistView.swift */; };
+		30599DC52C6FE7AE00842A96 /* PlaylistRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DC42C6FE7AE00842A96 /* PlaylistRowView.swift */; };
 		30599DC72C6FF68A00842A96 /* AppleMusicPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DC62C6FF68A00842A96 /* AppleMusicPermissionView.swift */; };
 /* End PBXBuildFile section */
 
@@ -27,7 +27,7 @@
 		30599DBE2C6C201400842A96 /* PlayState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayState.swift; sourceTree = "<group>"; };
 		30599DC02C6D5C4D00842A96 /* VolumeSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeSliderView.swift; sourceTree = "<group>"; };
 		30599DC22C6FE4ED00842A96 /* PlayBackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayBackView.swift; sourceTree = "<group>"; };
-		30599DC42C6FE7AE00842A96 /* PlaylistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistView.swift; sourceTree = "<group>"; };
+		30599DC42C6FE7AE00842A96 /* PlaylistRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistRowView.swift; sourceTree = "<group>"; };
 		30599DC62C6FF68A00842A96 /* AppleMusicPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusicPermissionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -64,7 +64,7 @@
 				30599DB02C6C15E100842A96 /* AppleMusicalChairsApp.swift */,
 				30599DB22C6C15E100842A96 /* ContentView.swift */,
 				30599DC62C6FF68A00842A96 /* AppleMusicPermissionView.swift */,
-				30599DC42C6FE7AE00842A96 /* PlaylistView.swift */,
+				30599DC42C6FE7AE00842A96 /* PlaylistRowView.swift */,
 				30599DC22C6FE4ED00842A96 /* PlayBackView.swift */,
 				30599DC02C6D5C4D00842A96 /* VolumeSliderView.swift */,
 				30599DBE2C6C201400842A96 /* PlayState.swift */,
@@ -152,7 +152,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				30599DC52C6FE7AE00842A96 /* PlaylistView.swift in Sources */,
+				30599DC52C6FE7AE00842A96 /* PlaylistRowView.swift in Sources */,
 				30599DB32C6C15E100842A96 /* ContentView.swift in Sources */,
 				30599DC72C6FF68A00842A96 /* AppleMusicPermissionView.swift in Sources */,
 				30599DB12C6C15E100842A96 /* AppleMusicalChairsApp.swift in Sources */,

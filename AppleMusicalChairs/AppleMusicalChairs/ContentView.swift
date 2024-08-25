@@ -23,7 +23,9 @@ struct ContentView: View {
             if musicAuthorizationStatus == .authorized {
                 NavigationStack {
                     List(playlists, id: \.self, selection: $selection) { playlist in
-                        PlaylistRowView(playlist: playlist)
+                        NavigationLink(destination: PlayListTracksView(playlist: playlist)) {
+                            PlaylistRowView(playlist: playlist)
+                        }
                     }
                     .listStyle(.plain)
                     .navigationTitle("Playlists")

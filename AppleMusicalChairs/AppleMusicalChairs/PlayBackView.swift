@@ -13,14 +13,18 @@ struct PlayBackView: View {
     @State private var volume: Double = 0
     @State private var songTimer: Int = 30
     @State private var roundTimer: Int = 8
+    @State var song: Track
     
     @State private var ifDeviceIsConnected = false
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.openURL) private var openURL
     @State private var isTimerActive = true
     
-    @State var musicAuthorizationStatus: MusicAuthorization.Status
-    @State var playlists = [Playlist]()
+    private let player = ApplicationMusicPlayer.shared
+    
+    private var isPlaying: Bool {
+        return (player.state.playbackStatus == .playing)
+    }
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
@@ -57,16 +61,24 @@ struct PlayBackView: View {
     var body: some View {
         VStack {
             // Album Cover
-            Image(.maybeMan)
-                .resizable()
-                .scaledToFit()
+            AsyncImage(url: song.artwork?.url(width: 100, height: 100)) { image in
+                image
+                    .resizable()
+                    .frame(maxWidth: .infinity)
+                    .aspectRatio(1.0, contentMode: .fit)
+            } placeholder: {
+                Image(systemName: "music.note")
+                    .resizable()
+                    .frame(width: 100, height: 100)
+            }
+            
             
             // Song Title
-            Text("Maybe Man")
+            Text(song.title)
                 .font(.title)
             
             // Album Title
-            Text("The Maybe Man")
+            Text(song.albumTitle ?? "Album Title Not Found")
                 .font(.caption)
             
             // Song Timer
@@ -119,13 +131,10 @@ struct PlayBackView: View {
                     .tint(.indigo)
                 Image(systemName: speakerImage)
             }
+            
             // Play/Pause Button
             Button(action: {
-                if playState == .play {
-                    playState = .pause
-                } else {
-                    playState = .play
-                }
+                handlePlayButton()
             }, label: {
                 Image(systemName: playPauseImage)
             })
@@ -139,12 +148,56 @@ struct PlayBackView: View {
         .padding()
     }
     
-    // MARK: - Initializers
-    public init(musicAuthorizationStatus: MusicAuthorization.Status = MusicAuthorization.currentStatus) {
-        _musicAuthorizationStatus = .init(initialValue: musicAuthorizationStatus)
+    private func handlePlayButton() {
+        Task {
+            if isPlaying {
+                player.pause()
+                playState = .play
+            } else {
+                try? await player.play()
+                playState = .pause
+                
+            }
+        }
+    }
+    
+    private func playTrack(song: Track) async {
+        do {
+            try await player.queue.insert(song, position: .afterCurrentEntry)
+            try await player.play()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+//    private func handleSelectionChange(oldValue: Track?, newValue: Track?) {
+//        if let newValue, let tracks {
+//            let localIsPlaying = isPlaying
+//            
+//            if localIsPlaying {
+//                player.pause()
+//            }
+//            
+//            player.queue = ApplicationMusicPlayer.Queue(for: tracks, startingAt: newValue)
+//            isPlaybackQueueSet = true
+//            
+//            if localIsPlaying {
+//                Task {
+//                    try? await player.play()
+//                }
+//            }
+//        }
+//    }
+    
+    private func durationStr(from duration: TimeInterval) -> String {
+        let seconds = Int(duration)
+        let minutes = seconds / 60
+        let remainder = seconds % 60
+        
+        return "\(minutes):\(remainder)"
     }
 }
 
-#Preview {
-    PlayBackView()
-}
+//#Preview {
+//    PlayBackView()
+//}

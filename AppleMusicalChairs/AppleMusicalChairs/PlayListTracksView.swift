@@ -14,29 +14,38 @@ struct PlayListTracksView: View {
     
     var body: some View {
         VStack {
-            if playlist?.artwork != nil {
-                AsyncImage(url: playlist?.artwork?.url(width: 100, height: 100))
-            } else {
+            AsyncImage(url: playlist?.artwork?.url(width: 100, height: 100)) { image in
+                image
+                    .resizable()
+                    .frame(maxWidth: .infinity)
+                    .aspectRatio(1.0, contentMode: .fit)
+            } placeholder: {
                 Image(systemName: "music.note.list")
                     .resizable()
                     .frame(width: 100, height: 100)
             }
+            
             
             Text(playlist?.name ?? "Unknown Playlist Name")
             
             Text("\(playlistSongs?.count ?? 0)")
             
             List(playlistSongs ?? [], id: \.self) { song in
-                HStack {
-                    if song.artwork != nil {
-                        AsyncImage(url: song.artwork?.url(width: 50, height: 50))
-                    } else {
-                        Image(systemName: "music.note")
-                            .resizable()
-                            .frame(width: 50, height: 50)
+                NavigationLink(destination: PlayBackView(song: song)) {
+                    HStack {
+                        AsyncImage(url: song.artwork?.url(width: 50, height: 50)) { image in
+                            image
+                                .resizable()
+                                .frame(maxWidth: .infinity)
+                                .aspectRatio(1.0, contentMode: .fit)
+                        } placeholder: {
+                            Image(systemName: "music.note")
+                                .resizable()
+                                .frame(width: 50, height: 50)
+                        }
+                        
+                        Text(song.title)
                     }
-                    
-                    Text(song.title)
                 }
             }
         }

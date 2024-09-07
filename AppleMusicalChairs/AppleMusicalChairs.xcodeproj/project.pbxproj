@@ -21,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		30069A002C796D23003DDE6B /* PlayListTracksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayListTracksView.swift; sourceTree = "<group>"; };
+		304046B62C8BBB7F00BF5D9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		30599DAD2C6C15E100842A96 /* AppleMusicalChairs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppleMusicalChairs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30599DB02C6C15E100842A96 /* AppleMusicalChairsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusicalChairsApp.swift; sourceTree = "<group>"; };
 		30599DB22C6C15E100842A96 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -63,6 +64,7 @@
 		30599DAF2C6C15E100842A96 /* AppleMusicalChairs */ = {
 			isa = PBXGroup;
 			children = (
+				304046B62C8BBB7F00BF5D9B /* Info.plist */,
 				30599DB02C6C15E100842A96 /* AppleMusicalChairsApp.swift */,
 				30599DB22C6C15E100842A96 /* ContentView.swift */,
 				30599DC62C6FF68A00842A96 /* AppleMusicPermissionView.swift */,
@@ -299,6 +301,7 @@
 				DEVELOPMENT_TEAM = H9AZCNDQS4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AppleMusicalChairs/Info.plist;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Need your playlists to play musical chairs!";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -329,6 +332,7 @@
 				DEVELOPMENT_TEAM = H9AZCNDQS4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AppleMusicalChairs/Info.plist;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Need your playlists to play musical chairs!";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

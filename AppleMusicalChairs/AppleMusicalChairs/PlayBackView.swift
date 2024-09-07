@@ -9,7 +9,7 @@ import SwiftUI
 import MusicKit
 
 struct PlayBackView: View {
-    @State private var playState: PlayState = .play
+    @State private var playState: PlayState = .pause
     @State private var volume: Double = 0
     @State private var songTimer: Int = 30
     @State private var roundTimer: Int = 8
@@ -95,7 +95,7 @@ struct PlayBackView: View {
                 }
             })
             .onChange(of: scenePhase) { oldValue, newValue in
-                if scenePhase == .active {
+                if scenePhase == .active && playState == .play {
                     isTimerActive = true
                 } else {
                     isTimerActive = false
@@ -117,7 +117,7 @@ struct PlayBackView: View {
                 }
             })
             .onChange(of: scenePhase) { oldValue, newValue in
-                if scenePhase == .active {
+                if scenePhase == .active{
                     isTimerActive = true
                 } else {
                     isTimerActive = false
@@ -139,7 +139,7 @@ struct PlayBackView: View {
                 Image(systemName: playPauseImage)
             })
             .padding()
-            .foregroundStyle(.secondary)
+            .foregroundStyle(.white)
             .font(.largeTitle)
             
             Image(systemName: airplayImage)
@@ -152,42 +152,24 @@ struct PlayBackView: View {
         Task {
             if isPlaying {
                 player.pause()
-                playState = .play
-            } else {
-                try? await player.play()
                 playState = .pause
-                
+            } else {
+                playState = .play
+                await playTrack(song: song)
             }
         }
     }
-    
-    private func playTrack(song: Track) async {
+   
+    @MainActor
+    public func playTrack(song: Track) async {
+        player.queue = [song]
+        
         do {
-            try await player.queue.insert(song, position: .afterCurrentEntry)
             try await player.play()
         } catch {
             print(error.localizedDescription)
         }
     }
-    
-//    private func handleSelectionChange(oldValue: Track?, newValue: Track?) {
-//        if let newValue, let tracks {
-//            let localIsPlaying = isPlaying
-//            
-//            if localIsPlaying {
-//                player.pause()
-//            }
-//            
-//            player.queue = ApplicationMusicPlayer.Queue(for: tracks, startingAt: newValue)
-//            isPlaybackQueueSet = true
-//            
-//            if localIsPlaying {
-//                Task {
-//                    try? await player.play()
-//                }
-//            }
-//        }
-//    }
     
     private func durationStr(from duration: TimeInterval) -> String {
         let seconds = Int(duration)

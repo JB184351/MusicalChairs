@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import MediaPlayer
 import MusicKit
 
 struct ContentView: View {

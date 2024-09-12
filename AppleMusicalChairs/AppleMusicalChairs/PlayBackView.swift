@@ -11,8 +11,8 @@ import MusicKit
 struct PlayBackView: View {
     @State private var playState: PlayState = .pause
     @State private var volume: Double = 0
-    @State private var songTimer: Int = 30
-    @State private var roundTimer: Int = 8
+    @State private var songTimer: Int = Int.random(in: 5...30)
+    @State private var roundTimer: Int = 10
     @State var song: Track
     
     @State private var ifDeviceIsConnected = false
@@ -61,17 +61,13 @@ struct PlayBackView: View {
     var body: some View {
         VStack {
             // Album Cover
-            AsyncImage(url: song.artwork?.url(width: 100, height: 100)) { image in
-                image
-                    .resizable()
-                    .frame(maxWidth: .infinity)
-                    .aspectRatio(1.0, contentMode: .fit)
-            } placeholder: {
+            if let artwork = song.artwork {
+                ArtworkImage(artwork, height: 200)
+            } else {
                 Image(systemName: "music.note")
                     .resizable()
-                    .frame(width: 100, height: 100)
+                    .frame(width: 200, height: 200)
             }
-            
             
             // Song Title
             Text(song.title)
@@ -124,13 +120,27 @@ struct PlayBackView: View {
                 }
             }
             
-            // Volume Slider Control
+            // Duration View
+            ProgressView(value: player.playbackTime, total: song.duration ?? 0.00)
+                .progressViewStyle(.linear)
+                .tint(.indigo.opacity(0.5))
+            
             HStack {
-                Image(systemName: "speaker")
-                Slider(value: $volume, in: 0...100)
-                    .tint(.indigo)
-                Image(systemName: speakerImage)
+                Text(durationStr(from: player.playbackTime))
+                    .font(.caption)
+                
+                Spacer()
+                
+                if let duration = song.duration {
+                    Text(durationStr(from: duration))
+                        .font(.caption)
+                }
             }
+            
+            // Volume Slider Control
+            VolumeSliderView()
+                .frame(minWidth: .zero, maxWidth: .infinity)
+                .padding(EdgeInsets(top: 50, leading: 0, bottom: 0, trailing: 0))
             
             // Play/Pause Button
             Button(action: {
@@ -139,7 +149,7 @@ struct PlayBackView: View {
                 Image(systemName: playPauseImage)
             })
             .padding()
-            .foregroundStyle(.white)
+            .foregroundStyle(.primary)
             .font(.largeTitle)
             
             Image(systemName: airplayImage)
@@ -159,7 +169,7 @@ struct PlayBackView: View {
             }
         }
     }
-   
+    
     @MainActor
     public func playTrack(song: Track) async {
         player.queue = [song]

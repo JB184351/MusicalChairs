@@ -77,6 +77,10 @@ struct PlayBackView: View {
             Text(song.albumTitle ?? "Album Title Not Found")
                 .font(.caption)
             
+            // Artist Name
+            Text(song.artistName)
+                .font(.caption)
+            
             // Song Timer
             ZStack {
                 Text("\(songTimer) seconds remaining")

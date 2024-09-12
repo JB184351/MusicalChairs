@@ -7,18 +7,18 @@
 
 import SwiftUI
 import MusicKit
+import AVFoundation
 
 struct PlayBackView: View {
-    @State private var playState: PlayState = .pause
-    @State private var volume: Double = 0
-    @State private var songTimer: Int = Int.random(in: 5...30)
-    @State private var roundTimer: Int = 10
-    @State var song: Track
-    
-    @State private var ifDeviceIsConnected = false
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.openURL) private var openURL
+    
+    @State var song: Track
+    @State private var playState: PlayState = .pause
+    @State private var songTimer: Int = Int.random(in: 5...30)
+    @State private var roundTimer: Int = 10
     @State private var isTimerActive = false
+    @State private var volumeValue = VolumeObserver()
     
     private let player = ApplicationMusicPlayer.shared
     
@@ -38,7 +38,7 @@ struct PlayBackView: View {
     }
     
     var speakerImage: String {
-        switch volume {
+        switch volumeValue.volume * 100 {
         case 0...30:
             "speaker.wave.1"
         case 31...60:
@@ -93,13 +93,6 @@ struct PlayBackView: View {
                     }
                 }
             })
-            .onChange(of: scenePhase) { oldValue, newValue in
-                if scenePhase == .active && playState == .play {
-                    isTimerActive = true
-                } else {
-                    isTimerActive = false
-                }
-            }
             
             ZStack {
                 Text("Next round starts in \(roundTimer) seconds")
@@ -117,13 +110,6 @@ struct PlayBackView: View {
                     roundTimer = 10
                 }
             })
-            .onChange(of: scenePhase) { oldValue, newValue in
-                if scenePhase == .active {
-                    isTimerActive = true
-                } else {
-                    isTimerActive = false
-                }
-            }
             
             // Progress View
             ProgressView(value: player.playbackTime, total: song.duration ?? 0.00)
@@ -144,9 +130,15 @@ struct PlayBackView: View {
             }
             
             // Volume Slider Control
-            VolumeSliderView()
-                .frame(minWidth: .zero, maxWidth: .infinity)
-                .padding(EdgeInsets(top: 50, leading: 0, bottom: 0, trailing: 0))
+            HStack {
+                Image(systemName: "speaker.wave.1")
+                
+                VolumeSliderView()
+                    .frame(minWidth: .zero, maxWidth: .infinity)
+                    .padding(EdgeInsets(top: 50, leading: 0, bottom: 0, trailing: 0))
+                
+                Image(systemName: speakerImage)
+            }
             
             // Play/Pause Button
             Button(action: {
@@ -182,7 +174,7 @@ struct PlayBackView: View {
     }
     
     @MainActor
-    public func playTrack() async {
+    private func playTrack() async {
         do {
             try await player.play()
         } catch {

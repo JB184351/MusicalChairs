@@ -50,14 +50,6 @@ struct PlayBackView: View {
         }
     }
     
-    var airplayImage: String {
-        if ifDeviceIsConnected {
-            "airplayaudio.circle.fill"
-        } else {
-            "airplayaudio"
-        }
-    }
-    
     var body: some View {
         VStack {
             // Album Cover
@@ -166,8 +158,8 @@ struct PlayBackView: View {
             .foregroundStyle(.primary)
             .font(.largeTitle)
             
-            Image(systemName: airplayImage)
-                .font(ifDeviceIsConnected ? .largeTitle : .title3)
+            AirPlayButtonView()
+                .frame(height: 50)
         }
         .padding()
         .onAppear {

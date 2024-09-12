@@ -7,7 +7,6 @@
 
 import SwiftUI
 import MediaPlayer
-import UIKit
 
 struct VolumeSliderView: UIViewRepresentable {
     func makeUIView(context: Context) -> MPVolumeView {

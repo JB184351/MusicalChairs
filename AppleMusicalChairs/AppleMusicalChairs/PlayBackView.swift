@@ -157,6 +157,9 @@ struct PlayBackView: View {
                 .font(ifDeviceIsConnected ? .largeTitle : .title3)
         }
         .padding()
+        .onAppear {
+            player.queue = [song]
+        }
     }
     
     private func handlePlayButton() {
@@ -173,8 +176,6 @@ struct PlayBackView: View {
     
     @MainActor
     public func playTrack(song: Track) async {
-        player.queue = [song]
-        
         do {
             try await player.play()
         } catch {

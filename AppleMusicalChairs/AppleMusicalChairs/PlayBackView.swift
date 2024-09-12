@@ -18,7 +18,7 @@ struct PlayBackView: View {
     @State private var ifDeviceIsConnected = false
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.openURL) private var openURL
-    @State private var isTimerActive = true
+    @State private var isTimerActive = false
     
     private let player = ApplicationMusicPlayer.shared
     
@@ -92,6 +92,13 @@ struct PlayBackView: View {
                 
                 if songTimer > 0 {
                     songTimer -= 1
+                    
+                    Task {
+                        if !isPlaying {
+                            await playTrack()
+                            playState = .play
+                        }
+                    }
                 }
             })
             .onChange(of: scenePhase) { oldValue, newValue in
@@ -111,13 +118,15 @@ struct PlayBackView: View {
                 guard isTimerActive else { return }
                 
                 if roundTimer > 0 && songTimer == 0 {
+                    player.pause()
                     roundTimer -= 1
                 } else if roundTimer == 0 {
-                    songTimer = 30
+                    songTimer = Int.random(in: 5...30)
+                    roundTimer = 10
                 }
             })
             .onChange(of: scenePhase) { oldValue, newValue in
-                if scenePhase == .active{
+                if scenePhase == .active {
                     isTimerActive = true
                 } else {
                     isTimerActive = false
@@ -171,15 +180,17 @@ struct PlayBackView: View {
             if isPlaying {
                 player.pause()
                 playState = .pause
+                isTimerActive = false
             } else {
                 playState = .play
-                await playTrack(song: song)
+                await playTrack()
+                isTimerActive = true
             }
         }
     }
     
     @MainActor
-    public func playTrack(song: Track) async {
+    public func playTrack() async {
         do {
             try await player.play()
         } catch {

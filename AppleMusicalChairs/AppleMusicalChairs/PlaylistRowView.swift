@@ -14,11 +14,9 @@ struct PlaylistRowView: View {
     
     var body: some View {
         HStack {
-            AsyncImage(url: playlist.artwork?.url(width: 100, height: 100)) { image in
-                image
-                    .resizable()
-                    .aspectRatio(1.0, contentMode: .fit)
-            } placeholder: {
+            if let artwork = playlist.artwork {
+                ArtworkImage(artwork, height: 100)
+            } else {
                 Image(systemName: "music.note.list")
                     .resizable()
                     .frame(width: 100, height: 100)

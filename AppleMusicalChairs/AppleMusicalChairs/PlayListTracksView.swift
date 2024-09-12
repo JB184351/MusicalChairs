@@ -14,15 +14,12 @@ struct PlayListTracksView: View {
     
     var body: some View {
         VStack {
-            AsyncImage(url: playlist?.artwork?.url(width: 100, height: 100)) { image in
-                image
-                    .resizable()
-                    .frame(maxWidth: .infinity)
-                    .aspectRatio(1.0, contentMode: .fit)
-            } placeholder: {
+            if let artwork = playlist?.artwork {
+                ArtworkImage(artwork, height: 200)
+            } else {
                 Image(systemName: "music.note.list")
                     .resizable()
-                    .frame(width: 100, height: 100)
+                    .frame(width: 200, height: 200)
             }
             
             
@@ -33,12 +30,9 @@ struct PlayListTracksView: View {
             List(playlistSongs ?? [], id: \.self) { song in
                 NavigationLink(destination: PlayBackView(song: song)) {
                     HStack {
-                        AsyncImage(url: song.artwork?.url(width: 50, height: 50)) { image in
-                            image
-                                .resizable()
-                                .frame(maxWidth: .infinity)
-                                .aspectRatio(1.0, contentMode: .fit)
-                        } placeholder: {
+                        if let artwork = song.artwork {
+                            ArtworkImage(artwork, height: 50)
+                        } else {
                             Image(systemName: "music.note")
                                 .resizable()
                                 .frame(width: 50, height: 50)

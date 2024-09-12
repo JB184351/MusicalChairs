@@ -46,7 +46,7 @@ struct PlayBackView: View {
         case 61...100:
             "speaker.wave.3"
         default:
-            "speaker.wave.3"
+            "speaker.wave.1"
         }
     }
     

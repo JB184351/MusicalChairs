@@ -120,11 +120,12 @@ struct PlayBackView: View {
                 }
             }
             
-            // Duration View
+            // Progress View
             ProgressView(value: player.playbackTime, total: song.duration ?? 0.00)
                 .progressViewStyle(.linear)
                 .tint(.indigo.opacity(0.5))
             
+            // Duration View
             HStack {
                 Text(durationStr(from: player.playbackTime))
                     .font(.caption)
@@ -186,8 +187,10 @@ struct PlayBackView: View {
         let minutes = seconds / 60
         let remainder = seconds % 60
         
-        return "\(minutes):\(remainder)"
+        // Format the string to ensure two digits for the remainder (seconds)
+        return String(format: "%d:%02d", minutes, remainder)
     }
+
 }
 
 //#Preview {

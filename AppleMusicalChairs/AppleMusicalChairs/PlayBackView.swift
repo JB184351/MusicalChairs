@@ -40,9 +40,9 @@ struct PlayBackView: View {
     
     var speakerImage: String {
         switch volumeValue.volume * 100 {
-        case 0...30:
+        case 0...30.999:
             "speaker.wave.1"
-        case 31...60:
+        case 31...60.999:
             "speaker.wave.2"
         case 61...100:
             "speaker.wave.3"
@@ -132,7 +132,7 @@ struct PlayBackView: View {
             
             // Volume Slider Control
             HStack {
-                Image(systemName: "speaker.wave.1")
+                Image(systemName: "speaker")
                 
                 VolumeSliderView()
                     .frame(minWidth: .zero, maxWidth: .infinity)

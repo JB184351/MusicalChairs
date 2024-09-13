@@ -75,44 +75,6 @@ struct PlayBackView: View {
             Text(song.artistName)
                 .font(.caption)
             
-            // Song Timer
-            ZStack {
-                Text("\(songTimer) seconds remaining")
-                    .fontWeight(.light)
-                    .padding()
-            }
-            .onReceive(timer, perform: { time in
-                guard isTimerActive else { return }
-                
-                if songTimer > 0 {
-                    songTimer -= 1
-                    
-                    Task {
-                        if !isPlaying {
-                            await playTrack()
-                            playState = .play
-                        }
-                    }
-                }
-            })
-            
-            ZStack {
-                Text("Next round starts in \(roundTimer) seconds")
-                    .fontWeight(.light)
-                    .padding()
-            }
-            .onReceive(timer, perform: { time in
-                guard isTimerActive else { return }
-                
-                if roundTimer > 0 && songTimer == 0 {
-                    player.pause()
-                    roundTimer -= 1
-                } else if roundTimer == 0 {
-                    songTimer = Int.random(in: 5...30)
-                    roundTimer = 10
-                }
-            })
-            
             // Progress View
             ProgressView(value: player.playbackTime, total: song.duration ?? 1.00)
                 .progressViewStyle(.linear)
@@ -144,6 +106,46 @@ struct PlayBackView: View {
             .frame(height: 15)
             
             Spacer()
+            
+            // Song Timer
+            
+            if songTimer > 0 {
+                ZStack {
+                    Text("Will pause in \(songTimer) seconds.")
+                        .fontWeight(.medium)
+                }
+                .onReceive(timer, perform: { time in
+                    guard isTimerActive else { return }
+                    
+                    if songTimer > 0 {
+                        songTimer -= 1
+                        
+                        Task {
+                            if !isPlaying {
+                                await playTrack()
+                                playState = .play
+                            }
+                        }
+                    }
+                })
+            } else {
+                // Round Timer
+                ZStack {
+                    Text("Next round starts in \(roundTimer) seconds.")
+                        .fontWeight(.medium)
+                }
+                .onReceive(timer, perform: { time in
+                    guard isTimerActive else { return }
+                    
+                    if roundTimer > 0 && songTimer == 0 {
+                        player.pause()
+                        roundTimer -= 1
+                    } else if roundTimer == 0 {
+                        songTimer = Int.random(in: 5...30)
+                        roundTimer = 10
+                    }
+                })
+            }
             
             // Play/Pause Button
             Button(action: {

@@ -19,6 +19,7 @@ struct PlayBackView: View {
     @State private var roundTimer: Int = 10
     @State private var isTimerActive = false
     @State private var volumeValue = VolumeObserver()
+    @State private var scale = 1.0
     
     private let player = ApplicationMusicPlayer.shared
     
@@ -144,11 +145,15 @@ struct PlayBackView: View {
             Button(action: {
                 handlePlayButton()
             }, label: {
-                Image(systemName: playPauseImage)
+                Text(playState == .play ? "Pause" : "Resume")
+                    .frame(maxWidth: .infinity)
             })
+            .buttonStyle(.borderedProminent)
             .padding()
-            .foregroundStyle(.primary)
             .font(.largeTitle)
+            .tint(.indigo)
+            .scaleEffect(scale)
+            .animation(.linear(duration: 1), value: scale)
             
             AirPlayButtonView()
                 .frame(height: 50)

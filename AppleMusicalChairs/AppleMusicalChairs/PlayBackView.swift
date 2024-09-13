@@ -20,6 +20,7 @@ struct PlayBackView: View {
     @State private var isTimerActive = false
     @State private var volumeValue = VolumeObserver()
     @State private var scale = 1.0
+    @State private var isFirstPlay = true
     
     private let player = ApplicationMusicPlayer.shared
     
@@ -113,7 +114,7 @@ struct PlayBackView: View {
             })
             
             // Progress View
-            ProgressView(value: player.playbackTime, total: song.duration ?? 0.00)
+            ProgressView(value: player.playbackTime, total: song.duration ?? 1.00)
                 .progressViewStyle(.linear)
                 .tint(.red.opacity(0.5))
             
@@ -147,8 +148,9 @@ struct PlayBackView: View {
             // Play/Pause Button
             Button(action: {
                 handlePlayButton()
+                isFirstPlay = false
             }, label: {
-                Text(playState == .play ? "Pause" : "Resume")
+                Text(playState == .play ? "Pause" : isFirstPlay ? "Play" : "Resume")
                     .frame(maxWidth: .infinity)
             })
             .buttonStyle(.borderedProminent)

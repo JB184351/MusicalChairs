@@ -55,7 +55,7 @@ struct PlayBackView: View {
         VStack {
             // Album Cover
             if let artwork = song.artwork {
-                ArtworkImage(artwork, height: 200)
+                ArtworkImage(artwork, height: 250)
             } else {
                 Image(systemName: "music.note")
                     .resizable()
@@ -115,7 +115,7 @@ struct PlayBackView: View {
             // Progress View
             ProgressView(value: player.playbackTime, total: song.duration ?? 0.00)
                 .progressViewStyle(.linear)
-                .tint(.indigo.opacity(0.5))
+                .tint(.red.opacity(0.5))
             
             // Duration View
             HStack {
@@ -130,16 +130,19 @@ struct PlayBackView: View {
                 }
             }
             
+            Spacer()
+            
             // Volume Slider Control
             HStack {
                 Image(systemName: "speaker")
                 
                 VolumeSliderView()
-                    .frame(minWidth: .zero, maxWidth: .infinity)
-                    .padding(EdgeInsets(top: 50, leading: 0, bottom: 0, trailing: 0))
                 
                 Image(systemName: speakerImage)
             }
+            .frame(height: 15)
+            
+            Spacer()
             
             // Play/Pause Button
             Button(action: {
@@ -151,7 +154,7 @@ struct PlayBackView: View {
             .buttonStyle(.borderedProminent)
             .padding()
             .font(.largeTitle)
-            .tint(.indigo)
+            .tint(.red)
             .scaleEffect(scale)
             .animation(.linear(duration: 1), value: scale)
             

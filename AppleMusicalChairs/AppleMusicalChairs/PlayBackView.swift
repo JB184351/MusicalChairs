@@ -7,7 +7,6 @@
 
 import SwiftUI
 import MusicKit
-import AVFoundation
 
 struct PlayBackView: View {
     @Environment(\.scenePhase) var scenePhase

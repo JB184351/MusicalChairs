@@ -18,7 +18,6 @@ struct PlayBackView: View {
     @State private var roundTimer: Int = 10
     @State private var isTimerActive = false
     @State private var volumeValue = VolumeObserver()
-    @State private var scale = 1.0
     @State private var isFirstPlay = true
     @State private var isDancing = false
     
@@ -202,8 +201,6 @@ struct PlayBackView: View {
             .padding()
             .font(.largeTitle)
             .tint(.red)
-            .scaleEffect(scale)
-            .animation(.linear(duration: 1), value: scale)
             
             AirPlayButtonView()
                 .frame(height: 50)

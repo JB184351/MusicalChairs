@@ -21,6 +21,7 @@ struct PlayBackView: View {
     @State private var volumeValue = VolumeObserver()
     @State private var scale = 1.0
     @State private var isFirstPlay = true
+    @State private var isDancing = false
     
     private let player = ApplicationMusicPlayer.shared
     
@@ -54,26 +55,68 @@ struct PlayBackView: View {
     
     var body: some View {
         VStack {
-            // Album Cover
-            if let artwork = song.artwork {
-                ArtworkImage(artwork, height: 250)
-            } else {
+            HStack(spacing: 50) {
                 Image(systemName: "music.note")
                     .resizable()
-                    .frame(width: 200, height: 200)
+                    .frame(width: 50, height: 50)
+                    .rotationEffect(.degrees(isDancing ? 15 : -15))
+                    .scaleEffect(1.0)
+                    .offset(x: isDancing ? 10 : -10, y: 0)
+                
+                Image(systemName: "chair")
+                    .resizable()
+                    .frame(width: 50, height: 50)
+                    .rotationEffect(.degrees(isDancing ? 15 : -15))
+                    .scaleEffect(1.0)
+                    .offset(x: isDancing ? 10 : -10, y: 0)
+                
+                Image(systemName: "chair")
+                    .resizable()
+                    .frame(width: 50, height: 50)
+                    .rotationEffect(.degrees(isDancing ? 15 : -15))
+                    .scaleEffect(1.0)
+                    .offset(x: isDancing ? 10 : -10, y: 0)
+                
+                Image(systemName: "music.note")
+                    .resizable()
+                    .frame(width: 50, height: 50)
+                    .rotationEffect(.degrees(isDancing ? 15 : -15))
+                    .scaleEffect(1.0)
+                    .offset(x: isDancing ? 10 : -10, y: 0)
             }
+            .padding()
             
-            // Song Title
-            Text(song.title)
-                .font(.title)
+            Spacer()
             
-            // Album Title
-            Text(song.albumTitle ?? "Album Title Not Found")
-                .font(.caption)
+            // Album Cover
+            HStack(spacing: 20) {
+                if let artwork = song.artwork {
+                    ArtworkImage(artwork, height: 100)
+                } else {
+                    Image(systemName: "music.note")
+                        .resizable()
+                        .frame(width: 100, height: 100)
+                }
+                
+                VStack(alignment: .leading) {
+                    // Song Title
+                    Text(song.title)
+                        .font(.title)
+                        .fixedSize(horizontal: false, vertical: true)
+                    
+                    // Album Title
+                    Text(song.albumTitle ?? "Album Title Not Found")
+                        .font(.caption)
+                        .fixedSize(horizontal: false, vertical: true)
+                    
+                    // Artist Name
+                    Text(song.artistName)
+                        .font(.caption)
+                }
+            }
+            .padding()
             
-            // Artist Name
-            Text(song.artistName)
-                .font(.caption)
+            Spacer()
             
             // Progress View
             ProgressView(value: player.playbackTime, total: song.duration ?? 1.00)
@@ -108,7 +151,6 @@ struct PlayBackView: View {
             Spacer()
             
             // Song Timer
-            
             if songTimer > 0 {
                 ZStack {
                     Text("Will pause in \(songTimer) seconds.")
@@ -119,6 +161,8 @@ struct PlayBackView: View {
                     
                     if songTimer > 0 {
                         songTimer -= 1
+                        
+                        isDancing.toggle()
                         
                         Task {
                             if !isPlaying {
@@ -202,7 +246,7 @@ struct PlayBackView: View {
         // Format the string to ensure two digits for the remainder (seconds)
         return String(format: "%d:%02d", minutes, remainder)
     }
-
+    
 }
 
 //#Preview {

@@ -17,6 +17,8 @@
 		30599DC32C6FE4ED00842A96 /* PlayBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DC22C6FE4ED00842A96 /* PlayBackView.swift */; };
 		30599DC52C6FE7AE00842A96 /* PlaylistRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DC42C6FE7AE00842A96 /* PlaylistRowView.swift */; };
 		30599DC72C6FF68A00842A96 /* AppleMusicPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DC62C6FF68A00842A96 /* AppleMusicPermissionView.swift */; };
+		306B58392C939B6A00AF50E1 /* AirPlayButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306B58382C939B6A00AF50E1 /* AirPlayButtonView.swift */; };
+		306B583B2C93A82000AF50E1 /* VolumeObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306B583A2C93A82000AF50E1 /* VolumeObserver.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		30599DC22C6FE4ED00842A96 /* PlayBackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayBackView.swift; sourceTree = "<group>"; };
 		30599DC42C6FE7AE00842A96 /* PlaylistRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistRowView.swift; sourceTree = "<group>"; };
 		30599DC62C6FF68A00842A96 /* AppleMusicPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusicPermissionView.swift; sourceTree = "<group>"; };
+		306B58382C939B6A00AF50E1 /* AirPlayButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirPlayButtonView.swift; sourceTree = "<group>"; };
+		306B583A2C93A82000AF50E1 /* VolumeObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,7 +75,9 @@
 				30599DC42C6FE7AE00842A96 /* PlaylistRowView.swift */,
 				30069A002C796D23003DDE6B /* PlayListTracksView.swift */,
 				30599DC22C6FE4ED00842A96 /* PlayBackView.swift */,
+				306B583A2C93A82000AF50E1 /* VolumeObserver.swift */,
 				30599DC02C6D5C4D00842A96 /* VolumeSliderView.swift */,
+				306B58382C939B6A00AF50E1 /* AirPlayButtonView.swift */,
 				30599DBE2C6C201400842A96 /* PlayState.swift */,
 				30599DB42C6C15E200842A96 /* Assets.xcassets */,
 				30599DB62C6C15E200842A96 /* Preview Content */,
@@ -164,7 +170,9 @@
 				30599DB12C6C15E100842A96 /* AppleMusicalChairsApp.swift in Sources */,
 				30599DBF2C6C201400842A96 /* PlayState.swift in Sources */,
 				30599DC12C6D5C4D00842A96 /* VolumeSliderView.swift in Sources */,
+				306B583B2C93A82000AF50E1 /* VolumeObserver.swift in Sources */,
 				30599DC32C6FE4ED00842A96 /* PlayBackView.swift in Sources */,
+				306B58392C939B6A00AF50E1 /* AirPlayButtonView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,8 +314,9 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -337,8 +346,9 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -13,6 +13,8 @@ struct PlayBackView: View {
     @Environment(\.openURL) private var openURL
     
     @State var song: Track
+    @Binding var songs: [Track]?
+    @Binding var isShuffled: Bool
     @State private var playState: PlayState = .pause
     @State private var songTimer: Int = Int.random(in: 5...30)
     @State private var roundTimer: Int = 10
@@ -148,6 +150,24 @@ struct PlayBackView: View {
             
             Spacer()
             
+            Button {
+                Task {
+                    songs?.removeFirst()
+                    
+                    if let song = songs?.first {
+                        self.song = song
+                        player.queue = [song]
+                    }
+                    
+                    await playTrack()
+                }
+            } label: {
+                Label("", systemImage: "forward.fill")
+                    .tint(.white)
+            }
+            
+            Spacer()
+            
             // Song Timer
             if songTimer > 0 {
                 ZStack {
@@ -207,7 +227,13 @@ struct PlayBackView: View {
         }
         .padding()
         .onAppear {
-            player.queue = [song]
+            if isShuffled {
+                songs = songs?.shuffled()
+                song = (songs?.first)!
+                player.queue = [song]
+            } else {
+                player.queue = [song]
+            }
         }
     }
     

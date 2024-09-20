@@ -70,8 +70,8 @@
 			children = (
 				304046B62C8BBB7F00BF5D9B /* Info.plist */,
 				30599DB02C6C15E100842A96 /* AppleMusicalChairsApp.swift */,
-				30599DB22C6C15E100842A96 /* ContentView.swift */,
 				30599DC62C6FF68A00842A96 /* AppleMusicPermissionView.swift */,
+				30599DB22C6C15E100842A96 /* ContentView.swift */,
 				30599DC42C6FE7AE00842A96 /* PlaylistRowView.swift */,
 				30069A002C796D23003DDE6B /* PlayListTracksView.swift */,
 				30599DC22C6FE4ED00842A96 /* PlayBackView.swift */,

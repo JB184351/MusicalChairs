@@ -12,7 +12,6 @@ struct PlayListTracksView: View {
     @State var playlist: Playlist?
     @State private var playlistSongs: [Track]? = []
     @State private var isPlayBackPresented = false
-    @State private var isShuffled = false
     
     var body: some View {
         VStack {
@@ -30,35 +29,31 @@ struct PlayListTracksView: View {
             Text("\(playlistSongs?.count ?? 0) songs")
             
             HStack(spacing: 50) {
-                Button {
-                    isPlayBackPresented = true
-                } label: {
-                    Label("Play All", systemImage: "play.fill")
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(.red)
-                .padding()
-                
-                Button {
-                    isPlayBackPresented = true
-                    isShuffled = true
-                } label: {
-                    Label("Shuffle", systemImage: "shuffle")
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(.red)
-                .padding()
-            }
-            .sheet(isPresented: $isPlayBackPresented) {
                 if let songs = playlistSongs {
                     if let song = songs.first {
-                        PlayBackView(song: song, songs: $playlistSongs, isShuffled: $isShuffled)
+                        NavigationLink(destination:  PlayBackView(song: song, songs: $playlistSongs, isShuffled: false)) {
+                            Label("Play All", systemImage: "play.fill")
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .tint(.red)
+                        .padding()
+                    }
+                }
+                
+                if let songs = playlistSongs {
+                    if let song = songs.first {
+                        NavigationLink(destination:  PlayBackView(song: song, songs: $playlistSongs, isShuffled: true)) {
+                            Label("Shuffle", systemImage: "shuffle")
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .tint(.red)
+                        .padding()
                     }
                 }
             }
             
             List(playlistSongs ?? [], id: \.self) { song in
-                NavigationLink(destination: PlayBackView(song: song, songs: $playlistSongs, isShuffled: $isShuffled)) {
+                NavigationLink(destination: PlayBackView(song: song, songs: $playlistSongs, isShuffled: false)) {
                     HStack {
                         if let artwork = song.artwork {
                             ArtworkImage(artwork, height: 50)
@@ -77,11 +72,10 @@ struct PlayListTracksView: View {
                     }
                 }
             }
+            .task {
+                await loadTracks()
+            }
         }
-        .task {
-            await loadTracks()
-        }
-        
     }
     
     @MainActor

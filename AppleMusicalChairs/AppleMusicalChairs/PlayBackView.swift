@@ -14,7 +14,7 @@ struct PlayBackView: View {
     
     @State var song: Track
     @Binding var songs: [Track]?
-    @Binding var isShuffled: Bool
+    @State var isShuffled = false
     @State private var playState: PlayState = .pause
     @State private var songTimer: Int = Int.random(in: 5...30)
     @State private var roundTimer: Int = 10

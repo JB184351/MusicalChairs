@@ -48,7 +48,6 @@ struct ContentView: View {
                 await loadPlaylists()
             }
         }
-        
     }
     
     // MARK: - Initializers

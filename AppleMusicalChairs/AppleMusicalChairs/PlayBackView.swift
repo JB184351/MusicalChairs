@@ -229,8 +229,9 @@ struct PlayBackView: View {
         .onAppear {
             if isShuffled {
                 songs = songs?.shuffled()
-                song = (songs?.first)!
-                player.queue = [song]
+                if let song = songs?.first {
+                    player.queue = [song]
+                }
             } else {
                 player.queue = [song]
             }

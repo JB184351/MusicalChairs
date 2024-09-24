@@ -17,7 +17,7 @@ struct PlayBackView: View {
     @State var isShuffled = false
     @State private var playState: PlayState = .pause
     @State private var songTimer: Int = Int.random(in: 5...30)
-    @State private var roundTimer: Int = 10
+    @State private var roundTimer: Int = 5
     @State private var isTimerActive = false
     @State private var volumeValue = VolumeObserver()
     @State private var isFirstPlay = true
@@ -204,7 +204,7 @@ struct PlayBackView: View {
                         roundTimer -= 1
                     } else if roundTimer == 0 {
                         songTimer = Int.random(in: 5...30)
-                        roundTimer = 10
+                        roundTimer = 5
                     }
                 })
             }
@@ -230,11 +230,17 @@ struct PlayBackView: View {
             if isShuffled {
                 songs = songs?.shuffled()
                 if let song = songs?.first {
+                    self.song = song
                     player.queue = [song]
                 }
             } else {
                 player.queue = [song]
             }
+        }
+        .onDisappear {
+            player.stop()
+            player.queue = []
+            player.playbackTime = .zero
         }
     }
     
@@ -269,7 +275,6 @@ struct PlayBackView: View {
         // Format the string to ensure two digits for the remainder (seconds)
         return String(format: "%d:%02d", minutes, remainder)
     }
-    
 }
 
 //#Preview {

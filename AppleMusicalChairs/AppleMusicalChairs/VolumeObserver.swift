@@ -8,7 +8,6 @@
 import Foundation
 import AVFoundation
 
-@Observable
 class VolumeObserver {
     
     var volume: Float = AVAudioSession.sharedInstance().outputVolume

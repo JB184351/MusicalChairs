@@ -9,9 +9,6 @@ import SwiftUI
 import MusicKit
 
 struct PlayBackView: View {
-    @Environment(\.scenePhase) var scenePhase
-    @Environment(\.openURL) private var openURL
-    
     @State var song: Track
     @Binding var songs: [Track]?
     @State var isShuffled = false
@@ -30,15 +27,6 @@ struct PlayBackView: View {
     }
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    
-    var playPauseImage: String {
-        switch playState {
-        case .play:
-            "pause.fill"
-        case .pause:
-            "play.fill"
-        }
-    }
     
     var speakerImage: String {
         switch volumeValue.volume * 100 {
@@ -90,7 +78,7 @@ struct PlayBackView: View {
             
             // Album Cover
             HStack(spacing: 20) {
-                if let artwork = song.artwork {
+                if let artwork = player.queue.currentEntry?.artwork {
                     ArtworkImage(artwork, height: 100)
                 } else {
                     Image(systemName: "music.note")
@@ -100,17 +88,12 @@ struct PlayBackView: View {
                 
                 VStack(alignment: .leading) {
                     // Song Title
-                    Text(song.title)
+                    Text(player.queue.currentEntry?.title ?? "Song Title Not Found")
                         .font(.title)
                         .fixedSize(horizontal: false, vertical: true)
                     
-                    // Album Title
-                    Text(song.albumTitle ?? "Album Title Not Found")
-                        .font(.caption)
-                        .fixedSize(horizontal: false, vertical: true)
-                    
                     // Artist Name
-                    Text(song.artistName)
+                    Text(player.queue.currentEntry?.subtitle ?? "Artist Name Not Found")
                         .font(.caption)
                 }
             }
@@ -119,7 +102,7 @@ struct PlayBackView: View {
             Spacer()
             
             // Progress View
-            ProgressView(value: player.playbackTime, total: song.duration ?? 1.00)
+            ProgressView(value: player.playbackTime, total: player.queue.currentEntry?.endTime ?? 1.00)
                 .progressViewStyle(.linear)
                 .tint(.red.opacity(0.5))
             
@@ -130,7 +113,7 @@ struct PlayBackView: View {
                 
                 Spacer()
                 
-                if let duration = song.duration {
+                if let duration = player.queue.currentEntry?.endTime {
                     Text(durationStr(from: duration))
                         .font(.caption)
                 }
@@ -152,14 +135,11 @@ struct PlayBackView: View {
             
             Button {
                 Task {
-                    songs?.removeFirst()
-                    
-                    if let song = songs?.first {
-                        self.song = song
-                        player.queue = [song]
+                    do {
+                        try await player.skipToNextEntry()
+                    } catch {
+                        print(error.localizedDescription)
                     }
-                    
-                    await playTrack()
                 }
             } label: {
                 Label("", systemImage: "forward.fill")
@@ -229,18 +209,19 @@ struct PlayBackView: View {
         .onAppear {
             if isShuffled {
                 songs = songs?.shuffled()
-                if let song = songs?.first {
-                    self.song = song
-                    player.queue = [song]
+                
+                if let songs, let firstSong = songs.first {
+                    player.queue = .init(for: songs, startingAt: firstSong)
+                    player.state.shuffleMode = .songs
+                    player.queue.currentEntry = player.queue.entries.first
                 }
-            } else {
-                player.queue = [song]
             }
         }
         .onDisappear {
             player.stop()
             player.queue = []
             player.playbackTime = .zero
+            player.queue.currentEntry = nil
         }
     }
     

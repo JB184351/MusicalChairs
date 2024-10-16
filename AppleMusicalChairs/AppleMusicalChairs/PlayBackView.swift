@@ -237,11 +237,9 @@ struct PlayBackView: View {
             player.queue.currentEntry = nil
         }
         .onChange(of: player.playbackTime) { newValue in
-            if isTimerActive {
-                if let duration = song.duration {
-                    if durationStr(from: newValue) == durationStr(from: duration) {
-                        skipToNextSong()
-                    }
+            if let duration = song.duration {
+                if durationStr(from: newValue) == durationStr(from: duration) {
+                    skipToNextSong()
                 }
             }
         }

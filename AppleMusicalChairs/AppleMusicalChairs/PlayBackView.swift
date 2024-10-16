@@ -10,7 +10,7 @@ import MusicKit
 
 struct PlayBackView: View {
     @State var song: Track
-    @Binding var songs: [Track]?
+    @State var songs: [Track]
     @State var isShuffled = false
     @State private var playState: PlayState = .pause
     @State private var songTimer: Int = Int.random(in: 5...30)
@@ -50,6 +50,7 @@ struct PlayBackView: View {
                     .rotationEffect(.degrees(isDancing ? 15 : -15))
                     .scaleEffect(1.0)
                     .offset(x: isDancing ? 10 : -10, y: 0)
+                    .foregroundStyle(.red)
                 
                 Image(systemName: "chair")
                     .resizable()
@@ -57,6 +58,7 @@ struct PlayBackView: View {
                     .rotationEffect(.degrees(isDancing ? 15 : -15))
                     .scaleEffect(1.0)
                     .offset(x: isDancing ? 10 : -10, y: 0)
+                    .foregroundStyle(.red)
                 
                 Image(systemName: "chair")
                     .resizable()
@@ -64,6 +66,7 @@ struct PlayBackView: View {
                     .rotationEffect(.degrees(isDancing ? 15 : -15))
                     .scaleEffect(1.0)
                     .offset(x: isDancing ? 10 : -10, y: 0)
+                    .foregroundStyle(.red)
                 
                 Image(systemName: "music.note")
                     .resizable()
@@ -71,6 +74,7 @@ struct PlayBackView: View {
                     .rotationEffect(.degrees(isDancing ? 15 : -15))
                     .scaleEffect(1.0)
                     .offset(x: isDancing ? 10 : -10, y: 0)
+                    .foregroundStyle(.red)
             }
             .padding()
             
@@ -78,7 +82,7 @@ struct PlayBackView: View {
             
             // Album Cover
             HStack(spacing: 20) {
-                if let artwork = player.queue.currentEntry?.artwork {
+                if let artwork = song.artwork {
                     ArtworkImage(artwork, height: 100)
                 } else {
                     Image(systemName: "music.note")
@@ -88,13 +92,22 @@ struct PlayBackView: View {
                 
                 VStack(alignment: .leading) {
                     // Song Title
-                    Text(player.queue.currentEntry?.title ?? "Song Title Not Found")
-                        .font(.title)
+                    Text(song.title)
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .fixedSize(horizontal: false, vertical: true)
+                    
+                    // Album Title
+                    Text(song.albumTitle ?? "Album Title Unvailable")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
                     
                     // Artist Name
-                    Text(player.queue.currentEntry?.subtitle ?? "Artist Name Not Found")
-                        .font(.caption)
+                    Text(song.artistName)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
             }
             .padding()
@@ -102,7 +115,7 @@ struct PlayBackView: View {
             Spacer()
             
             // Progress View
-            ProgressView(value: player.playbackTime, total: player.queue.currentEntry?.endTime ?? 1.00)
+            ProgressView(value: player.playbackTime, total: song.duration ?? 1.00)
                 .progressViewStyle(.linear)
                 .tint(.red.opacity(0.5))
             
@@ -113,7 +126,7 @@ struct PlayBackView: View {
                 
                 Spacer()
                 
-                if let duration = player.queue.currentEntry?.endTime {
+                if let duration = song.duration {
                     Text(durationStr(from: duration))
                         .font(.caption)
                 }
@@ -134,13 +147,7 @@ struct PlayBackView: View {
             Spacer()
             
             Button {
-                Task {
-                    do {
-                        try await player.skipToNextEntry()
-                    } catch {
-                        print(error.localizedDescription)
-                    }
-                }
+                skipToNextSong()
             } label: {
                 Label("", systemImage: "forward.fill")
                     .tint(.white)
@@ -208,13 +215,19 @@ struct PlayBackView: View {
         .padding()
         .onAppear {
             if isShuffled {
-                songs = songs?.shuffled()
+                songs = songs.shuffled()
                 
-                if let songs, let firstSong = songs.first {
-                    player.queue = .init(for: songs, startingAt: firstSong)
-                    player.state.shuffleMode = .songs
-                    player.queue.currentEntry = player.queue.entries.first
+                if let firstSong = songs.first {
+                    player.queue = [firstSong]
+                    song = firstSong
                 }
+            } else if !songs.isEmpty {
+                if let firstSong = songs.first {
+                    player.queue = [firstSong]
+                    song = firstSong
+                }
+            } else {
+                player.queue = [song]
             }
         }
         .onDisappear {
@@ -222,6 +235,15 @@ struct PlayBackView: View {
             player.queue = []
             player.playbackTime = .zero
             player.queue.currentEntry = nil
+        }
+        .onChange(of: player.playbackTime) { newValue in
+            if isTimerActive {
+                if let duration = song.duration {
+                    if durationStr(from: newValue) == durationStr(from: duration) {
+                        skipToNextSong()
+                    }
+                }
+            }
         }
     }
     
@@ -245,6 +267,23 @@ struct PlayBackView: View {
             try await player.play()
         } catch {
             print(error.localizedDescription)
+        }
+    }
+    
+    private func skipToNextSong() {
+        Task {
+            if songs.count > 0 {
+                self.songs.removeFirst()
+            }
+            
+            if let song = songs.first {
+                self.song = song
+                player.queue = [song]
+            }
+            
+            playState = .play
+            await playTrack()
+            isTimerActive = true
         }
     }
     

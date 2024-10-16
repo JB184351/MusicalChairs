@@ -28,5 +28,5 @@ struct PlaylistRowView: View {
 }
 
 //#Preview {
-//    PlaylistView()
+//    PlaylistRowView()
 //}

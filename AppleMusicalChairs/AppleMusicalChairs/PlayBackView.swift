@@ -9,13 +9,12 @@ import SwiftUI
 import MusicKit
 
 struct PlayBackView: View {
-    @Environment(\.scenePhase) var scenePhase
-    @Environment(\.openURL) private var openURL
-    
     @State var song: Track
+    @State var songs: [Track]
+    @State var isShuffled = false
     @State private var playState: PlayState = .pause
     @State private var songTimer: Int = Int.random(in: 5...30)
-    @State private var roundTimer: Int = 10
+    @State private var roundTimer: Int = 5
     @State private var isTimerActive = false
     @State private var volumeValue = VolumeObserver()
     @State private var isFirstPlay = true
@@ -28,15 +27,6 @@ struct PlayBackView: View {
     }
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    
-    var playPauseImage: String {
-        switch playState {
-        case .play:
-            "pause.fill"
-        case .pause:
-            "play.fill"
-        }
-    }
     
     var speakerImage: String {
         switch volumeValue.volume * 100 {
@@ -60,6 +50,7 @@ struct PlayBackView: View {
                     .rotationEffect(.degrees(isDancing ? 15 : -15))
                     .scaleEffect(1.0)
                     .offset(x: isDancing ? 10 : -10, y: 0)
+                    .foregroundStyle(.red)
                 
                 Image(systemName: "chair")
                     .resizable()
@@ -67,6 +58,7 @@ struct PlayBackView: View {
                     .rotationEffect(.degrees(isDancing ? 15 : -15))
                     .scaleEffect(1.0)
                     .offset(x: isDancing ? 10 : -10, y: 0)
+                    .foregroundStyle(.red)
                 
                 Image(systemName: "chair")
                     .resizable()
@@ -74,6 +66,7 @@ struct PlayBackView: View {
                     .rotationEffect(.degrees(isDancing ? 15 : -15))
                     .scaleEffect(1.0)
                     .offset(x: isDancing ? 10 : -10, y: 0)
+                    .foregroundStyle(.red)
                 
                 Image(systemName: "music.note")
                     .resizable()
@@ -81,10 +74,13 @@ struct PlayBackView: View {
                     .rotationEffect(.degrees(isDancing ? 15 : -15))
                     .scaleEffect(1.0)
                     .offset(x: isDancing ? 10 : -10, y: 0)
+                    .foregroundStyle(.red)
             }
             .padding()
             
             Spacer()
+            
+            // MARK: - Song Information
             
             // Album Cover
             HStack(spacing: 20) {
@@ -99,22 +95,28 @@ struct PlayBackView: View {
                 VStack(alignment: .leading) {
                     // Song Title
                     Text(song.title)
-                        .font(.title)
+                        .font(.title2)
+                        .fontWeight(.bold)
                         .fixedSize(horizontal: false, vertical: true)
                     
                     // Album Title
-                    Text(song.albumTitle ?? "Album Title Not Found")
-                        .font(.caption)
+                    Text(song.albumTitle ?? "Album Title Unvailable")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
                     
                     // Artist Name
                     Text(song.artistName)
-                        .font(.caption)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
             }
             .padding()
             
             Spacer()
+            
+            // MARK: - Current Playback/Duration View
             
             // Progress View
             ProgressView(value: player.playbackTime, total: song.duration ?? 1.00)
@@ -136,7 +138,8 @@ struct PlayBackView: View {
             
             Spacer()
             
-            // Volume Slider Control
+            // MARK: - Volume Slider/SKip Button
+            
             HStack {
                 Image(systemName: "speaker")
                 
@@ -145,6 +148,15 @@ struct PlayBackView: View {
                 Image(systemName: speakerImage)
             }
             .frame(height: 15)
+            
+            Spacer()
+            
+            Button {
+                skipToNextSong()
+            } label: {
+                Label("", systemImage: "forward.fill")
+                    .tint(.white)
+            }
             
             Spacer()
             
@@ -184,7 +196,7 @@ struct PlayBackView: View {
                         roundTimer -= 1
                     } else if roundTimer == 0 {
                         songTimer = Int.random(in: 5...30)
-                        roundTimer = 10
+                        roundTimer = 5
                     }
                 })
             }
@@ -207,7 +219,34 @@ struct PlayBackView: View {
         }
         .padding()
         .onAppear {
-            player.queue = [song]
+            if isShuffled {
+                songs = songs.shuffled()
+                
+                if let firstSong = songs.first {
+                    player.queue = [firstSong]
+                    song = firstSong
+                }
+            } else if !songs.isEmpty {
+                if let firstSong = songs.first {
+                    player.queue = [firstSong]
+                    song = firstSong
+                }
+            } else {
+                player.queue = [song]
+            }
+        }
+        .onDisappear {
+            player.stop()
+            player.queue = []
+            player.playbackTime = .zero
+            player.queue.currentEntry = nil
+        }
+        .onChange(of: player.playbackTime) { newValue in
+            if let duration = song.duration {
+                if durationStr(from: newValue) == durationStr(from: duration) {
+                    skipToNextSong()
+                }
+            }
         }
     }
     
@@ -234,6 +273,23 @@ struct PlayBackView: View {
         }
     }
     
+    private func skipToNextSong() {
+        Task {
+            if songs.count > 0 {
+                self.songs.removeFirst()
+            }
+            
+            if let song = songs.first {
+                self.song = song
+                player.queue = [song]
+            }
+            
+            playState = .play
+            await playTrack()
+            isTimerActive = true
+        }
+    }
+    
     private func durationStr(from duration: TimeInterval) -> String {
         let seconds = Int(duration)
         let minutes = seconds / 60
@@ -242,7 +298,6 @@ struct PlayBackView: View {
         // Format the string to ensure two digits for the remainder (seconds)
         return String(format: "%d:%02d", minutes, remainder)
     }
-    
 }
 
 //#Preview {

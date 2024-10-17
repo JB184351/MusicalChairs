@@ -30,10 +30,15 @@ struct ContentView: View {
                     .navigationTitle("Playlists")
                     .overlay {
                         if playlists.isEmpty {
-                            ContentUnavailableView
-                                .init {
-                                    Text("Playlists loading...")
-                                }
+                            if #available(iOS 17.0, *) {
+                                ContentUnavailableView
+                                    .init {
+                                        Text("Playlists loading...")
+                                    }
+                            } else {
+                                // Fallback on earlier versions
+                                Text("Playlist loading...")
+                            }
                         }
                     }
                 }
@@ -48,7 +53,6 @@ struct ContentView: View {
                 await loadPlaylists()
             }
         }
-        
     }
     
     // MARK: - Initializers

@@ -80,6 +80,8 @@ struct PlayBackView: View {
             
             Spacer()
             
+            // MARK: - Song Information
+            
             // Album Cover
             HStack(spacing: 20) {
                 if let artwork = song.artwork {
@@ -114,6 +116,8 @@ struct PlayBackView: View {
             
             Spacer()
             
+            // MARK: - Current Playback/Duration View
+            
             // Progress View
             ProgressView(value: player.playbackTime, total: song.duration ?? 1.00)
                 .progressViewStyle(.linear)
@@ -134,7 +138,8 @@ struct PlayBackView: View {
             
             Spacer()
             
-            // Volume Slider Control
+            // MARK: - Volume Slider/SKip Button
+            
             HStack {
                 Image(systemName: "speaker")
                 

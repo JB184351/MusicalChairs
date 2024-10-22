@@ -23,6 +23,11 @@ struct PlayBackView: View {
     @State private var isDancing = false
     @State private var showSettings = false
     
+    @State private var isSongTimerRandom = false
+    @State private var isRoundTimerRandom = false
+    @State private var isSongTimerDisplayed = false
+    @State private var isRoundTimerDisplayed = false
+    
     private let player = ApplicationMusicPlayer.shared
     
     private var isPlaying: Bool {
@@ -166,8 +171,10 @@ struct PlayBackView: View {
                 // Song Timer
                 if songTimer > 0 {
                     ZStack {
-                        Text("Will pause in \(songTimer) seconds.")
-                            .fontWeight(.medium)
+                        if isSongTimerDisplayed {
+                            Text("Will pause in \(songTimer) seconds.")
+                                .fontWeight(.medium)
+                        }
                     }
                     .onReceive(timer, perform: { time in
                         guard isTimerActive else { return }
@@ -188,8 +195,10 @@ struct PlayBackView: View {
                 } else {
                     // Round Timer
                     ZStack {
-                        Text("Next round starts in \(roundTimer) seconds.")
-                            .fontWeight(.medium)
+                        if isRoundTimerDisplayed {
+                            Text("Next round starts in \(roundTimer) seconds.")
+                                .fontWeight(.medium)
+                        }
                     }
                     .onReceive(timer, perform: { time in
                         guard isTimerActive else { return }
@@ -272,7 +281,7 @@ struct PlayBackView: View {
                 isTimerActive = true
             }
         } content: {
-            SettingsView(songTimer: $currentSongTimer, roundTimer: $currentRoundTimer)
+            SettingsView(songTimer: $currentSongTimer, roundTimer: $currentRoundTimer, isSongTimerRandom: $isSongTimerRandom, isRoundTimerRandom: $isRoundTimerRandom, isSongTimerDisplayed: $isSongTimerDisplayed, isRoundTimerDisplayed: $isRoundTimerDisplayed)
         }
 
     }
@@ -327,8 +336,17 @@ struct PlayBackView: View {
     }
     
     private func resetTimers() {
-        songTimer = currentSongTimer
-        roundTimer = currentRoundTimer
+        if isSongTimerRandom {
+            songTimer = Int.random(in: 5...45)
+        } else {
+            songTimer = currentSongTimer
+        }
+        
+        if isRoundTimerRandom {
+            roundTimer = Int.random(in: 5...15)
+        } else {
+            roundTimer = currentRoundTimer
+        }
     }
 }
 

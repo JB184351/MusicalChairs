@@ -33,7 +33,6 @@ struct PlayListTracksView: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(.red)
-                    .padding()
                 }
                 
                 if let song = playlistSongs.first {
@@ -42,7 +41,6 @@ struct PlayListTracksView: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(.red)
-                    .padding()
                 }
             }
             

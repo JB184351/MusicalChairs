@@ -225,6 +225,7 @@ struct PlayBackView: View {
                 .font(.largeTitle)
                 .tint(.red)
                 
+                // Make Airplay Icon and Settings Icon bigger
                 HStack {
                     AirPlayButtonView()
                         .frame(height: 50)

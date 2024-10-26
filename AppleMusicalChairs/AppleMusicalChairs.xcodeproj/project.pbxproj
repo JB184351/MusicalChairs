@@ -19,6 +19,7 @@
 		30599DC72C6FF68A00842A96 /* AppleMusicPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DC62C6FF68A00842A96 /* AppleMusicPermissionView.swift */; };
 		306B58392C939B6A00AF50E1 /* AirPlayButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306B58382C939B6A00AF50E1 /* AirPlayButtonView.swift */; };
 		306B583B2C93A82000AF50E1 /* VolumeObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306B583A2C93A82000AF50E1 /* VolumeObserver.swift */; };
+		30BF5B9B2CC1DB1900BF0196 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BF5B9A2CC1DB1900BF0196 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		30599DC62C6FF68A00842A96 /* AppleMusicPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusicPermissionView.swift; sourceTree = "<group>"; };
 		306B58382C939B6A00AF50E1 /* AirPlayButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirPlayButtonView.swift; sourceTree = "<group>"; };
 		306B583A2C93A82000AF50E1 /* VolumeObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeObserver.swift; sourceTree = "<group>"; };
+		30BF5B9A2CC1DB1900BF0196 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 				30599DC42C6FE7AE00842A96 /* PlaylistRowView.swift */,
 				30069A002C796D23003DDE6B /* PlayListTracksView.swift */,
 				30599DC22C6FE4ED00842A96 /* PlayBackView.swift */,
+				30BF5B9A2CC1DB1900BF0196 /* SettingsView.swift */,
 				306B583A2C93A82000AF50E1 /* VolumeObserver.swift */,
 				30599DC02C6D5C4D00842A96 /* VolumeSliderView.swift */,
 				306B58382C939B6A00AF50E1 /* AirPlayButtonView.swift */,
@@ -173,6 +176,7 @@
 				306B583B2C93A82000AF50E1 /* VolumeObserver.swift in Sources */,
 				30599DC32C6FE4ED00842A96 /* PlayBackView.swift in Sources */,
 				306B58392C939B6A00AF50E1 /* AirPlayButtonView.swift in Sources */,
+				30BF5B9B2CC1DB1900BF0196 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

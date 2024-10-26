@@ -13,12 +13,20 @@ struct PlayBackView: View {
     @State var songs: [Track]
     @State var isShuffled = false
     @State private var playState: PlayState = .pause
-    @State private var songTimer: Int = Int.random(in: 5...30)
-    @State private var roundTimer: Int = 5
+    @State private var songTimer: Int = 0
+    @State private var roundTimer: Int = 0
+    @State private var currentSongTimer: Int = 30
+    @State private var currentRoundTimer: Int = 5
     @State private var isTimerActive = false
     @State private var volumeValue = VolumeObserver()
     @State private var isFirstPlay = true
     @State private var isDancing = false
+    @State private var showSettings = false
+    
+    @State private var isSongTimerRandom = false
+    @State private var isRoundTimerRandom = false
+    @State private var isSongTimerDisplayed = false
+    @State private var isRoundTimerDisplayed = false
     
     private let player = ApplicationMusicPlayer.shared
     
@@ -42,183 +50,202 @@ struct PlayBackView: View {
     }
     
     var body: some View {
-        VStack {
-            HStack(spacing: 50) {
-                Image(systemName: "music.note")
-                    .resizable()
-                    .frame(width: 50, height: 50)
-                    .rotationEffect(.degrees(isDancing ? 15 : -15))
-                    .scaleEffect(1.0)
-                    .offset(x: isDancing ? 10 : -10, y: 0)
-                    .foregroundStyle(.red)
-                
-                Image(systemName: "chair")
-                    .resizable()
-                    .frame(width: 50, height: 50)
-                    .rotationEffect(.degrees(isDancing ? 15 : -15))
-                    .scaleEffect(1.0)
-                    .offset(x: isDancing ? 10 : -10, y: 0)
-                    .foregroundStyle(.red)
-                
-                Image(systemName: "chair")
-                    .resizable()
-                    .frame(width: 50, height: 50)
-                    .rotationEffect(.degrees(isDancing ? 15 : -15))
-                    .scaleEffect(1.0)
-                    .offset(x: isDancing ? 10 : -10, y: 0)
-                    .foregroundStyle(.red)
-                
-                Image(systemName: "music.note")
-                    .resizable()
-                    .frame(width: 50, height: 50)
-                    .rotationEffect(.degrees(isDancing ? 15 : -15))
-                    .scaleEffect(1.0)
-                    .offset(x: isDancing ? 10 : -10, y: 0)
-                    .foregroundStyle(.red)
-            }
-            .padding()
-            
-            Spacer()
-            
-            // MARK: - Song Information
-            
-            // Album Cover
-            HStack(spacing: 20) {
-                if let artwork = song.artwork {
-                    ArtworkImage(artwork, height: 100)
-                } else {
+            VStack {
+                HStack(spacing: 50) {
                     Image(systemName: "music.note")
                         .resizable()
-                        .frame(width: 100, height: 100)
-                }
-                
-                VStack(alignment: .leading) {
-                    // Song Title
-                    Text(song.title)
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(width: 50, height: 50)
+                        .rotationEffect(.degrees(isDancing ? 15 : -15))
+                        .scaleEffect(1.0)
+                        .offset(x: isDancing ? 10 : -10, y: 0)
+                        .foregroundStyle(.red)
                     
-                    // Album Title
-                    Text(song.albumTitle ?? "Album Title Unvailable")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                        .fixedSize(horizontal: false, vertical: true)
+                    Image(systemName: "chair")
+                        .resizable()
+                        .frame(width: 50, height: 50)
+                        .rotationEffect(.degrees(isDancing ? 15 : -15))
+                        .scaleEffect(1.0)
+                        .offset(x: isDancing ? 10 : -10, y: 0)
+                        .foregroundStyle(.red)
                     
-                    // Artist Name
-                    Text(song.artistName)
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                        .fixedSize(horizontal: false, vertical: true)
+                    Image(systemName: "chair")
+                        .resizable()
+                        .frame(width: 50, height: 50)
+                        .rotationEffect(.degrees(isDancing ? 15 : -15))
+                        .scaleEffect(1.0)
+                        .offset(x: isDancing ? 10 : -10, y: 0)
+                        .foregroundStyle(.red)
+                    
+                    Image(systemName: "music.note")
+                        .resizable()
+                        .frame(width: 50, height: 50)
+                        .rotationEffect(.degrees(isDancing ? 15 : -15))
+                        .scaleEffect(1.0)
+                        .offset(x: isDancing ? 10 : -10, y: 0)
+                        .foregroundStyle(.red)
                 }
-            }
-            .padding()
-            
-            Spacer()
-            
-            // MARK: - Current Playback/Duration View
-            
-            // Progress View
-            ProgressView(value: player.playbackTime, total: song.duration ?? 1.00)
-                .progressViewStyle(.linear)
-                .tint(.red.opacity(0.5))
-            
-            // Duration View
-            HStack {
-                Text(durationStr(from: player.playbackTime))
-                    .font(.caption)
+                .padding()
                 
                 Spacer()
                 
-                if let duration = song.duration {
-                    Text(durationStr(from: duration))
-                        .font(.caption)
-                }
-            }
-            
-            Spacer()
-            
-            // MARK: - Volume Slider/SKip Button
-            
-            HStack {
-                Image(systemName: "speaker")
+                // MARK: - Song Information
                 
-                VolumeSliderView()
-                
-                Image(systemName: speakerImage)
-            }
-            .frame(height: 15)
-            
-            Spacer()
-            
-            Button {
-                skipToNextSong()
-            } label: {
-                Label("", systemImage: "forward.fill")
-                    .tint(.white)
-            }
-            
-            Spacer()
-            
-            // Song Timer
-            if songTimer > 0 {
-                ZStack {
-                    Text("Will pause in \(songTimer) seconds.")
-                        .fontWeight(.medium)
-                }
-                .onReceive(timer, perform: { time in
-                    guard isTimerActive else { return }
+                // Album Cover
+                HStack(spacing: 20) {
+                    if let artwork = song.artwork {
+                        ArtworkImage(artwork, height: 100)
+                    } else {
+                        Image(systemName: "music.note")
+                            .resizable()
+                            .frame(width: 100, height: 100)
+                    }
                     
-                    if songTimer > 0 {
-                        songTimer -= 1
+                    VStack(alignment: .leading) {
+                        // Song Title
+                        Text(song.title)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .fixedSize(horizontal: false, vertical: true)
                         
-                        isDancing.toggle()
+                        // Album Title
+                        Text(song.albumTitle ?? "Album Title Unvailable")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
                         
-                        Task {
-                            if !isPlaying {
-                                await playTrack()
-                                playState = .play
-                            }
+                        // Artist Name
+                        Text(song.artistName)
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .padding()
+                
+                Spacer()
+                
+                // MARK: - Current Playback/Duration View
+                
+                // Progress View
+                ProgressView(value: player.playbackTime, total: song.duration ?? 1.00)
+                    .progressViewStyle(.linear)
+                    .tint(.red.opacity(0.5))
+                
+                // Duration View
+                HStack {
+                    Text(durationStr(from: player.playbackTime))
+                        .font(.caption)
+                    
+                    Spacer()
+                    
+                    if let duration = song.duration {
+                        Text(durationStr(from: duration))
+                            .font(.caption)
+                    }
+                }
+                
+                Spacer()
+                
+                // MARK: - Volume Slider/SKip Button
+                
+                HStack {
+                    Image(systemName: "speaker")
+                    
+                    VolumeSliderView()
+                    
+                    Image(systemName: speakerImage)
+                }
+                .frame(height: 15)
+                
+                Spacer()
+                
+                Button {
+                    skipToNextSong()
+                } label: {
+                    Label("", systemImage: "forward.fill")
+                        .tint(.white)
+                }
+                
+                Spacer()
+                
+                // Song Timer
+                if songTimer > 0 {
+                    ZStack {
+                        if isSongTimerDisplayed {
+                            Text("Will pause in \(songTimer) seconds.")
+                                .fontWeight(.medium)
                         }
                     }
-                })
-            } else {
-                // Round Timer
-                ZStack {
-                    Text("Next round starts in \(roundTimer) seconds.")
-                        .fontWeight(.medium)
-                }
-                .onReceive(timer, perform: { time in
-                    guard isTimerActive else { return }
-                    
-                    if roundTimer > 0 && songTimer == 0 {
-                        player.pause()
-                        roundTimer -= 1
-                    } else if roundTimer == 0 {
-                        songTimer = Int.random(in: 5...30)
-                        roundTimer = 5
+                    .onReceive(timer, perform: { time in
+                        guard isTimerActive else { return }
+                        
+                        if songTimer > 0 {
+                            songTimer -= 1
+                            
+                            isDancing.toggle()
+                            
+                            Task {
+                                if !isPlaying {
+                                    await playTrack()
+                                    playState = .play
+                                }
+                            }
+                        }
+                    })
+                } else {
+                    // Round Timer
+                    ZStack {
+                        if isRoundTimerDisplayed {
+                            Text("Next round starts in \(roundTimer) seconds.")
+                                .fontWeight(.medium)
+                        }
                     }
+                    .onReceive(timer, perform: { time in
+                        guard isTimerActive else { return }
+                        
+                        if roundTimer > 0 && songTimer == 0 {
+                            player.pause()
+                            roundTimer -= 1
+                        } else if roundTimer == 0 {
+                            resetTimers()
+                        }
+                    })
+                }
+                
+                // Play/Pause Button
+                Button(action: {
+                    handlePlayButton()
+                    isFirstPlay = false
+                }, label: {
+                    Text(playState == .play ? "Pause" : isFirstPlay ? "Play" : "Resume")
+                        .frame(maxWidth: .infinity)
                 })
-            }
-            
-            // Play/Pause Button
-            Button(action: {
-                handlePlayButton()
-                isFirstPlay = false
-            }, label: {
-                Text(playState == .play ? "Pause" : isFirstPlay ? "Play" : "Resume")
-                    .frame(maxWidth: .infinity)
-            })
-            .buttonStyle(.borderedProminent)
-            .padding()
-            .font(.largeTitle)
-            .tint(.red)
-            
-            AirPlayButtonView()
-                .frame(height: 50)
+                .buttonStyle(.borderedProminent)
+                .padding()
+                .font(.largeTitle)
+                .tint(.red)
+                
+                // Make Airplay Icon and Settings Icon bigger
+                HStack {
+                    AirPlayButtonView()
+                        .frame(height: 50)
+                    
+                    Button(action: {
+                        showSettings = true
+                        player.pause()
+                        playState = .pause
+                        isTimerActive = false
+                    }) {
+                        Image(systemName: "gear")
+                            .foregroundStyle(.white)
+                            .font(.system(size: 24))
+                    }
+                }
         }
-        .padding()
         .onAppear {
+            songTimer = Int.random(in: 5...30)
+            roundTimer = 5
+            
             if isShuffled {
                 songs = songs.shuffled()
                 
@@ -248,6 +275,16 @@ struct PlayBackView: View {
                 }
             }
         }
+        .sheet(isPresented: $showSettings) {
+            Task {
+                playState = .play
+                await playTrack()
+                isTimerActive = true
+            }
+        } content: {
+            SettingsView(songTimer: $currentSongTimer, roundTimer: $currentRoundTimer, isSongTimerRandom: $isSongTimerRandom, isRoundTimerRandom: $isRoundTimerRandom, isSongTimerDisplayed: $isSongTimerDisplayed, isRoundTimerDisplayed: $isRoundTimerDisplayed)
+        }
+
     }
     
     private func handlePlayButton() {
@@ -297,6 +334,20 @@ struct PlayBackView: View {
         
         // Format the string to ensure two digits for the remainder (seconds)
         return String(format: "%d:%02d", minutes, remainder)
+    }
+    
+    private func resetTimers() {
+        if isSongTimerRandom {
+            songTimer = Int.random(in: 5...45)
+        } else {
+            songTimer = currentSongTimer
+        }
+        
+        if isRoundTimerRandom {
+            roundTimer = Int.random(in: 5...15)
+        } else {
+            roundTimer = currentRoundTimer
+        }
     }
 }
 

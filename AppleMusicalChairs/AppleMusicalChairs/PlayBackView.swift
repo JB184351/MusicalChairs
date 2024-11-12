@@ -29,8 +29,8 @@ struct PlayBackView: View {
     @State private var isRoundTimerDisplayed = false
     
     @State private var songTitle = ""
-    @State private var songArtist = ""
-    @State private var songAlbum = ""
+    @State private var songArtistName = ""
+    @State private var songAlbumTitle = ""
     @State private var songArtwork: Artwork?
     @State private var songDuration = TimeInterval(0)
     
@@ -114,13 +114,13 @@ struct PlayBackView: View {
                             .fixedSize(horizontal: false, vertical: true)
                         
                         // Album Title
-                        Text(songAlbum)
+                        Text(songAlbumTitle)
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                             .fixedSize(horizontal: false, vertical: true)
                         
                         // Artist Name
-                        Text(songArtist)
+                        Text(songArtistName)
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                             .fixedSize(horizontal: false, vertical: true)
@@ -258,22 +258,22 @@ struct PlayBackView: View {
                 if let firstSong = songs.first {
                     player.queue = .init(for: songs, startingAt: firstSong)
                     songTitle = firstSong.title
-                    songArtist = firstSong.artistName
-                    songAlbum = firstSong.albumTitle ?? "Unknown Album Name"
+                    songArtistName = firstSong.artistName
                     songArtwork = firstSong.artwork
-                    if let duration = firstSong.duration {
+                    if let duration = firstSong.duration, let albumTitle = firstSong.albumTitle {
                         songDuration = duration
+                        songAlbumTitle = albumTitle
                     }
                 }
             } else {
                 if let firstSong = songs.first {
                     player.queue = .init(for: songs, startingAt: firstSong)
                     songTitle = firstSong.title
-                    songArtist = firstSong.artistName
-                    songAlbum = firstSong.albumTitle ?? "Unknown Album Name"
+                    songArtistName = firstSong.artistName
                     songArtwork = firstSong.artwork
-                    if let duration = firstSong.duration {
+                    if let duration = firstSong.duration, let albumTitle = firstSong.albumTitle {
                         songDuration = duration
+                        songAlbumTitle = albumTitle
                     }
                 }
             }
@@ -288,11 +288,11 @@ struct PlayBackView: View {
             switch newValue {
             case .song(let song):
                 self.songTitle = song.title
-                self.songArtist = song.artistName
-                if let duration = song.duration {
+                self.songArtistName = song.artistName
+                if let duration = song.duration, let albumTitle = song.albumTitle {
                     self.songDuration = duration
+                    self.songAlbumTitle = albumTitle
                 }
-                self.songAlbum = song.albumTitle ?? "Unknown Album Name"
                 self.songArtwork = song.artwork
             default:
                 break

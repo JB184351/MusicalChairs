@@ -9,8 +9,7 @@ import SwiftUI
 import MusicKit
 
 struct PlayBackView: View {
-    @State var song: Track
-    @State var songs: [Track]
+    @State var playlist: Playlist?
     @State var isShuffled = false
     @State private var playState: PlayState = .pause
     @State private var songTimer: Int = 0
@@ -252,30 +251,8 @@ struct PlayBackView: View {
             songTimer = Int.random(in: 5...30)
             roundTimer = 5
             
-            if isShuffled {
-                songs = songs.shuffled()
-                
-                if let firstSong = songs.first {
-                    player.queue = .init(for: songs, startingAt: firstSong)
-                    songTitle = firstSong.title
-                    songArtistName = firstSong.artistName
-                    songArtwork = firstSong.artwork
-                    if let duration = firstSong.duration, let albumTitle = firstSong.albumTitle {
-                        songDuration = duration
-                        songAlbumTitle = albumTitle
-                    }
-                }
-            } else {
-                if let firstSong = songs.first {
-                    player.queue = .init(for: songs, startingAt: firstSong)
-                    songTitle = firstSong.title
-                    songArtistName = firstSong.artistName
-                    songArtwork = firstSong.artwork
-                    if let duration = firstSong.duration, let albumTitle = firstSong.albumTitle {
-                        songDuration = duration
-                        songAlbumTitle = albumTitle
-                    }
-                }
+            Task {
+                await loadPlaylistAndSetQueue()
             }
         }
         .onDisappear {
@@ -284,8 +261,8 @@ struct PlayBackView: View {
             player.playbackTime = .zero
             player.queue.currentEntry = nil
         }
-        .onChange(of: player.queue.currentEntry?.item) { newValue in
-            switch newValue {
+        .onChange(of: player.queue.currentEntry?.item) {
+            switch player.queue.currentEntry?.item {
             case .song(let song):
                 self.songTitle = song.title
                 self.songArtistName = song.artistName
@@ -361,6 +338,23 @@ struct PlayBackView: View {
             roundTimer = Int.random(in: 5...15)
         } else {
             roundTimer = currentRoundTimer
+        }
+    }
+    
+    @MainActor
+    private func loadPlaylistAndSetQueue() async {
+        if let playlist = playlist {
+            do {
+                let detailedPlaylist = try await playlist.with([.entries])
+                if let firstSong = detailedPlaylist.entries?.first {
+                    player.queue = .init(playlist: detailedPlaylist, startingAt: firstSong)
+                    songTitle = firstSong.title
+                    songArtistName = firstSong.artistName
+                    songArtwork = firstSong.artwork
+                }
+            } catch {
+                print("Failed to load playlist entries: \(error.localizedDescription)")
+            }
         }
     }
 }

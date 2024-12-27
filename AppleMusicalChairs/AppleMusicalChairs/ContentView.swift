@@ -22,7 +22,7 @@ struct ContentView: View {
             if musicAuthorizationStatus == .authorized {
                 NavigationStack {
                     List(playlists, id: \.self, selection: $selection) { playlist in
-                        NavigationLink(destination: PlayListTracksView(playlist: playlist)) {
+                        NavigationLink(destination: PlayBackView(playlist: playlist)) {
                             PlaylistRowView(playlist: playlist)
                         }
                     }

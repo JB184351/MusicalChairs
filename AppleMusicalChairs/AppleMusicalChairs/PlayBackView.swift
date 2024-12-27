@@ -350,7 +350,9 @@ struct PlayBackView: View {
                     player.queue = .init(playlist: detailedPlaylist, startingAt: firstSong)
                     songTitle = firstSong.title
                     songArtistName = firstSong.artistName
+                    songAlbumTitle = firstSong.albumTitle ?? "Album Title Not Found"
                     songArtwork = firstSong.artwork
+                    songDuration = firstSong.duration ?? 0
                 }
             } catch {
                 print("Failed to load playlist entries: \(error.localizedDescription)")

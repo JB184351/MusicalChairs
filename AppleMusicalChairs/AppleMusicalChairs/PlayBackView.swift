@@ -55,6 +55,7 @@ struct PlayBackView: View {
     }
     
     var body: some View {
+        NavigationStack {
             VStack {
                 HStack(spacing: 50) {
                     Image(systemName: "music.note")
@@ -234,57 +235,59 @@ struct PlayBackView: View {
                 HStack {
                     AirPlayButtonView()
                         .frame(height: 50)
-                    
-                    Button(action: {
-                        showSettings = true
-                        player.pause()
-                        playState = .pause
-                        isTimerActive = false
-                    }) {
-                        Image(systemName: "gear")
-                            .foregroundStyle(.white)
-                            .font(.system(size: 24))
+                }
+            }
+            .onAppear {
+                songTimer = Int.random(in: 5...30)
+                roundTimer = 5
+                
+                Task {
+                    await loadPlaylistAndSetQueue()
+                }
+            }
+            .onDisappear {
+                player.stop()
+                player.queue = []
+                player.playbackTime = .zero
+                player.queue.currentEntry = nil
+            }
+            .onChange(of: player.queue.currentEntry?.item) {
+                switch player.queue.currentEntry?.item {
+                case .song(let song):
+                    self.songTitle = song.title
+                    self.songArtistName = song.artistName
+                    if let duration = song.duration, let albumTitle = song.albumTitle {
+                        self.songDuration = duration
+                        self.songAlbumTitle = albumTitle
                     }
+                    self.songArtwork = song.artwork
+                default:
+                    break
                 }
-        }
-        .onAppear {
-            songTimer = Int.random(in: 5...30)
-            roundTimer = 5
+            }
+            .sheet(isPresented: $showSettings) {
+                Task {
+                    playState = .play
+                    await playTrack()
+                    isTimerActive = true
+                }
+            } content: {
+                SettingsView(songTimer: $currentSongTimer, roundTimer: $currentRoundTimer, isSongTimerRandom: $isSongTimerRandom, isRoundTimerRandom: $isRoundTimerRandom, isSongTimerDisplayed: $isSongTimerDisplayed, isRoundTimerDisplayed: $isRoundTimerDisplayed)
+            }
+            .toolbar {
+                Button(action: {
+                    showSettings = true
+                    player.pause()
+                    playState = .pause
+                    isTimerActive = false
+                }) {
+                    Image(systemName: "gear")
+                        .foregroundStyle(.white)
+                        .font(.system(size: 18))
+                }
+            }
             
-            Task {
-                await loadPlaylistAndSetQueue()
-            }
         }
-        .onDisappear {
-            player.stop()
-            player.queue = []
-            player.playbackTime = .zero
-            player.queue.currentEntry = nil
-        }
-        .onChange(of: player.queue.currentEntry?.item) {
-            switch player.queue.currentEntry?.item {
-            case .song(let song):
-                self.songTitle = song.title
-                self.songArtistName = song.artistName
-                if let duration = song.duration, let albumTitle = song.albumTitle {
-                    self.songDuration = duration
-                    self.songAlbumTitle = albumTitle
-                }
-                self.songArtwork = song.artwork
-            default:
-                break
-            }
-        }
-        .sheet(isPresented: $showSettings) {
-            Task {
-                playState = .play
-                await playTrack()
-                isTimerActive = true
-            }
-        } content: {
-            SettingsView(songTimer: $currentSongTimer, roundTimer: $currentRoundTimer, isSongTimerRandom: $isSongTimerRandom, isRoundTimerRandom: $isRoundTimerRandom, isSongTimerDisplayed: $isSongTimerDisplayed, isRoundTimerDisplayed: $isRoundTimerDisplayed)
-        }
-
     }
     
     private func handlePlayButton() {

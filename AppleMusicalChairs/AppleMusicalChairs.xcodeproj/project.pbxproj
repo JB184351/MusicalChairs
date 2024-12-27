@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		30069A012C796D23003DDE6B /* PlayListTracksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30069A002C796D23003DDE6B /* PlayListTracksView.swift */; };
 		30599DB12C6C15E100842A96 /* AppleMusicalChairsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DB02C6C15E100842A96 /* AppleMusicalChairsApp.swift */; };
 		30599DB32C6C15E100842A96 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DB22C6C15E100842A96 /* ContentView.swift */; };
 		30599DB52C6C15E200842A96 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30599DB42C6C15E200842A96 /* Assets.xcassets */; };
@@ -23,7 +22,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		30069A002C796D23003DDE6B /* PlayListTracksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayListTracksView.swift; sourceTree = "<group>"; };
 		304046B62C8BBB7F00BF5D9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		30599DAD2C6C15E100842A96 /* AppleMusicalChairs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppleMusicalChairs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30599DB02C6C15E100842A96 /* AppleMusicalChairsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusicalChairsApp.swift; sourceTree = "<group>"; };
@@ -75,7 +73,6 @@
 				30599DC62C6FF68A00842A96 /* AppleMusicPermissionView.swift */,
 				30599DB22C6C15E100842A96 /* ContentView.swift */,
 				30599DC42C6FE7AE00842A96 /* PlaylistRowView.swift */,
-				30069A002C796D23003DDE6B /* PlayListTracksView.swift */,
 				30599DC22C6FE4ED00842A96 /* PlayBackView.swift */,
 				30BF5B9A2CC1DB1900BF0196 /* SettingsView.swift */,
 				306B583A2C93A82000AF50E1 /* VolumeObserver.swift */,
@@ -166,7 +163,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				30069A012C796D23003DDE6B /* PlayListTracksView.swift in Sources */,
 				30599DC52C6FE7AE00842A96 /* PlaylistRowView.swift in Sources */,
 				30599DB32C6C15E100842A96 /* ContentView.swift in Sources */,
 				30599DC72C6FF68A00842A96 /* AppleMusicPermissionView.swift in Sources */,

@@ -10,7 +10,7 @@ import MusicKit
 
 struct PlayBackView: View {
     @State var playlist: Playlist?
-    @State var isShuffled = false
+    @AppStorage("isShuffled") var isShuffled = true
     @State private var playState: PlayState = .pause
     @State private var songTimer: Int = 0
     @State private var roundTimer: Int = 0
@@ -136,6 +136,7 @@ struct PlayBackView: View {
                 ProgressView(value: player.playbackTime, total: songDuration)
                     .progressViewStyle(.linear)
                     .tint(.red.opacity(0.5))
+                    .padding(.horizontal)
                 
                 // Duration View
                 HStack {
@@ -147,6 +148,7 @@ struct PlayBackView: View {
                     Text(durationStr(from: songDuration))
                         .font(.caption)
                 }
+                .padding(.horizontal)
                 
                 Spacer()
                 
@@ -160,17 +162,18 @@ struct PlayBackView: View {
                     Image(systemName: speakerImage)
                 }
                 .frame(height: 15)
+                .padding(.horizontal)
                 
                 Spacer()
                 
-//                Button {
-//                    Task {
-//                        await skipToNextSong()
-//                    }
-//                } label: {
-//                    Label("", systemImage: "forward.fill")
-//                        .tint(.white)
-//                }
+                Button {
+                    Task {
+                        await skipToNextSong()
+                    }
+                } label: {
+                    Label("", systemImage: "forward.fill")
+                        .tint(.white)
+                }
                 
                 Spacer()
                 
@@ -277,7 +280,7 @@ struct PlayBackView: View {
                     isTimerActive = true
                 }
             } content: {
-                SettingsView(songTimer: $currentSongTimer, roundTimer: $currentRoundTimer, isSongTimerRandom: $isSongTimerRandom, isRoundTimerRandom: $isRoundTimerRandom, isSongTimerDisplayed: $isSongTimerDisplayed, isRoundTimerDisplayed: $isRoundTimerDisplayed, playlist: $playlist)
+                SettingsView(songTimer: $currentSongTimer, roundTimer: $currentRoundTimer, isSongTimerRandom: $isSongTimerRandom, isRoundTimerRandom: $isRoundTimerRandom, isSongTimerDisplayed: $isSongTimerDisplayed, isRoundTimerDisplayed: $isRoundTimerDisplayed, playlist: $playlist, isShuffled: $isShuffled)
             }
             .toolbar {
                 Button(action: {
@@ -287,7 +290,7 @@ struct PlayBackView: View {
                     isTimerActive = false
                 }) {
                     Image(systemName: "gear")
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.red)
                         .font(.system(size: 18))
                 }
             }
@@ -354,13 +357,18 @@ struct PlayBackView: View {
         if let playlist = playlist {
             do {
                 let detailedPlaylist = try await playlist.with([.entries])
-                if let firstSong = detailedPlaylist.entries?.first {
-                    player.queue = .init(playlist: detailedPlaylist, startingAt: firstSong)
-                    songTitle = firstSong.title
-                    songArtistName = firstSong.artistName
-                    songAlbumTitle = firstSong.albumTitle ?? "Album Title Not Found"
-                    songArtwork = firstSong.artwork
-                    songDuration = firstSong.duration ?? 0
+                if let entries = detailedPlaylist.entries {
+                    player.state.shuffleMode = isShuffled ? .songs : .off
+                    
+                    if let firstSong = isShuffled ? entries.randomElement() : entries.first {
+                        player.queue = .init(playlist: detailedPlaylist, startingAt: firstSong)
+                        
+                        songTitle = firstSong.title
+                        songArtistName = firstSong.artistName
+                        songAlbumTitle = firstSong.albumTitle ?? "Album Title Not Found"
+                        songArtwork = firstSong.artwork
+                        songDuration = firstSong.duration ?? 0
+                    }
                 }
             } catch {
                 print("Failed to load playlist entries: \(error.localizedDescription)")

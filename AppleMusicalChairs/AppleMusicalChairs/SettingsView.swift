@@ -16,6 +16,7 @@ struct SettingsView: View {
     @Binding var isSongTimerDisplayed: Bool
     @Binding var isRoundTimerDisplayed: Bool
     @Binding var playlist: Playlist?
+    @Binding var isShuffled: Bool
     @State private var playlists: [Playlist] = []
     
     var body: some View {
@@ -68,6 +69,12 @@ struct SettingsView: View {
                 Text("Timer Display Options")
             } footer: {
                 Text("This will show the remaining time the song or round has left")
+            }
+            
+            Section() {
+                Toggle("Shuffle Playlist", isOn: $isShuffled)
+            } header: {
+                Text("Shuffle Playlist Option")
             }
             
             Section(header: Text("Playlist Selection")) {

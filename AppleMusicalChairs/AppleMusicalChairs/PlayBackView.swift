@@ -265,6 +265,11 @@ struct PlayBackView: View {
                     break
                 }
             }
+            .onChange(of: playlist) {
+                Task {
+                    await loadPlaylistAndSetQueue()
+                }
+            }
             .sheet(isPresented: $showSettings) {
                 Task {
                     playState = .play
@@ -272,7 +277,7 @@ struct PlayBackView: View {
                     isTimerActive = true
                 }
             } content: {
-                SettingsView(songTimer: $currentSongTimer, roundTimer: $currentRoundTimer, isSongTimerRandom: $isSongTimerRandom, isRoundTimerRandom: $isRoundTimerRandom, isSongTimerDisplayed: $isSongTimerDisplayed, isRoundTimerDisplayed: $isRoundTimerDisplayed)
+                SettingsView(songTimer: $currentSongTimer, roundTimer: $currentRoundTimer, isSongTimerRandom: $isSongTimerRandom, isRoundTimerRandom: $isRoundTimerRandom, isSongTimerDisplayed: $isSongTimerDisplayed, isRoundTimerDisplayed: $isRoundTimerDisplayed, playlist: $playlist)
             }
             .toolbar {
                 Button(action: {

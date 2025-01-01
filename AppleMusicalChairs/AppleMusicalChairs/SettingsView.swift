@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MusicKit
 
 struct SettingsView: View {
     @Binding var songTimer: Int
@@ -14,6 +15,8 @@ struct SettingsView: View {
     @Binding var isRoundTimerRandom: Bool
     @Binding var isSongTimerDisplayed: Bool
     @Binding var isRoundTimerDisplayed: Bool
+    @Binding var playlist: Playlist?
+    @State private var playlists: [Playlist] = []
     
     var body: some View {
         Form {
@@ -66,9 +69,50 @@ struct SettingsView: View {
             } footer: {
                 Text("This will show the remaining time the song or round has left")
             }
+            
+            Section(header: Text("Playlist Selection")) {
+                if playlists.isEmpty {
+                    Text("Playlists are loading or not available")
+                        .foregroundColor(.secondary)
+                } else {
+                    Picker("Select Playlist", selection: $playlist) {
+                        Text("None").tag(Optional<Playlist>.none)
+                        ForEach(playlists, id: \.id) { playlist in
+                            Text(playlist.name).tag(Optional(playlist))
+                        }
+                    }
+                }
+            }
         }
-        .navigationTitle("Settings")
+        .task {
+            await loadPlaylists()
+        }
+
     }
+    
+    @MainActor
+    private func loadPlaylists() async {
+        do {
+            let url = URL(string: "https://api.music.apple.com/v1/me/library/playlists")!
+            let libraryPlaylistRequest = MusicDataRequest(urlRequest: URLRequest(url: url))
+            let libraryPlaylistResponse = try await libraryPlaylistRequest.response()
+            
+            let decoder = JSONDecoder()
+            let libraryPlaylists = try decoder.decode(MusicItemCollection<Playlist>.self, from: libraryPlaylistResponse.data)
+            setPlaylists(libraryPlaylists)
+        } catch {
+            setPlaylists(MusicItemCollection<Playlist>())
+        }
+    }
+    
+    @MainActor
+    private func setPlaylists(_ playlists: MusicItemCollection<Playlist>) {
+        withAnimation {
+            self.playlists = Array(playlists)
+        }
+    }
+
+
 }
 
 //#Preview {

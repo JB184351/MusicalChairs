@@ -163,14 +163,14 @@ struct PlayBackView: View {
                 
                 Spacer()
                 
-                Button {
-                    Task {
-                        await skipToNextSong()
-                    }
-                } label: {
-                    Label("", systemImage: "forward.fill")
-                        .tint(.white)
-                }
+//                Button {
+//                    Task {
+//                        await skipToNextSong()
+//                    }
+//                } label: {
+//                    Label("", systemImage: "forward.fill")
+//                        .tint(.white)
+//                }
                 
                 Spacer()
                 

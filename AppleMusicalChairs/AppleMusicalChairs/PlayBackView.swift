@@ -33,6 +33,8 @@ struct PlayBackView: View {
     @State private var songArtwork: Artwork?
     @State private var songDuration = TimeInterval(0)
     
+    @Environment(\.colorScheme) private var colorScheme
+    
     private let player = ApplicationMusicPlayer.shared
     
     private var isPlaying: Bool {
@@ -166,18 +168,7 @@ struct PlayBackView: View {
                 
                 Spacer()
                 
-                Button {
-                    Task {
-                        await skipToNextSong()
-                    }
-                } label: {
-                    Label("", systemImage: "forward.fill")
-                        .tint(.white)
-                }
-                
-                Spacer()
-                
-                // Song Timer
+                // MARK: - Song Timer
                 if songTimer > 0 {
                     ZStack {
                         if isSongTimerDisplayed {
@@ -220,6 +211,30 @@ struct PlayBackView: View {
                         }
                     })
                 }
+                
+                Button(action: {
+                    Task {
+                        await skipToNextSong()
+                    }
+                }, label: {
+                    Text("Skip Song")
+                        .frame(maxWidth: .infinity)
+                })
+                .buttonStyle(.borderedProminent)
+                .padding()
+                .font(.largeTitle)
+                .tint(.purple)
+                
+//                Button {
+//                    Task {
+//                        await skipToNextSong()
+//                    }
+//                } label: {
+//                    Label("", systemImage: "forward.fill")
+//                        .tint(.white)
+//                }
+                
+//                Spacer()
                 
                 // Play/Pause Button
                 Button(action: {
@@ -290,7 +305,7 @@ struct PlayBackView: View {
                     isTimerActive = false
                 }) {
                     Image(systemName: "gear")
-                        .foregroundStyle(.red)
+                        .foregroundStyle(colorScheme == .dark ? Color.white : Color.black)
                         .font(.system(size: 18))
                 }
             }

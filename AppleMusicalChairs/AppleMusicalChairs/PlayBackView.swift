@@ -225,17 +225,6 @@ struct PlayBackView: View {
                 .font(.largeTitle)
                 .tint(.purple)
                 
-//                Button {
-//                    Task {
-//                        await skipToNextSong()
-//                    }
-//                } label: {
-//                    Label("", systemImage: "forward.fill")
-//                        .tint(.white)
-//                }
-                
-//                Spacer()
-                
                 // Play/Pause Button
                 Button(action: {
                     handlePlayButton()

@@ -242,6 +242,7 @@ struct PlayBackView: View {
                 HStack {
                     AirPlayButtonView()
                         .frame(height: 50)
+                        .tint(colorScheme == .dark ? .white : .black)
                 }
             }
             .onAppear {
@@ -295,7 +296,7 @@ struct PlayBackView: View {
                 }) {
                     Image(systemName: "gear")
                         .foregroundStyle(colorScheme == .dark ? Color.white : Color.black)
-                        .font(.system(size: 18))
+                        .font(.system(size: 20))
                 }
             }
             

@@ -101,7 +101,7 @@ struct PlayBackView: View {
                 // Album Cover
                 HStack(spacing: 20) {
                     if let artwork = songArtwork {
-                        ArtworkImage(artwork, height: 100)
+                        ArtworkImage(artwork, height: 150)
                     } else {
                         Image(systemName: "music.note")
                             .resizable()

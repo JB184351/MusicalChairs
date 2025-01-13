@@ -10,7 +10,7 @@ import MusicKit
 
 struct PlayBackView: View {
     @State var playlist: Playlist?
-    @State var isShuffled = false
+    @AppStorage("isShuffled") var isShuffled = true
     @State private var playState: PlayState = .pause
     @State private var songTimer: Int = 0
     @State private var roundTimer: Int = 0
@@ -32,6 +32,8 @@ struct PlayBackView: View {
     @State private var songAlbumTitle = ""
     @State private var songArtwork: Artwork?
     @State private var songDuration = TimeInterval(0)
+    
+    @Environment(\.colorScheme) private var colorScheme
     
     private let player = ApplicationMusicPlayer.shared
     
@@ -55,6 +57,7 @@ struct PlayBackView: View {
     }
     
     var body: some View {
+        NavigationStack {
             VStack {
                 HStack(spacing: 50) {
                     Image(systemName: "music.note")
@@ -98,7 +101,7 @@ struct PlayBackView: View {
                 // Album Cover
                 HStack(spacing: 20) {
                     if let artwork = songArtwork {
-                        ArtworkImage(artwork, height: 100)
+                        ArtworkImage(artwork, height: 150)
                     } else {
                         Image(systemName: "music.note")
                             .resizable()
@@ -135,6 +138,7 @@ struct PlayBackView: View {
                 ProgressView(value: player.playbackTime, total: songDuration)
                     .progressViewStyle(.linear)
                     .tint(.red.opacity(0.5))
+                    .padding(.horizontal)
                 
                 // Duration View
                 HStack {
@@ -146,6 +150,7 @@ struct PlayBackView: View {
                     Text(durationStr(from: songDuration))
                         .font(.caption)
                 }
+                .padding(.horizontal)
                 
                 Spacer()
                 
@@ -159,21 +164,11 @@ struct PlayBackView: View {
                     Image(systemName: speakerImage)
                 }
                 .frame(height: 15)
+                .padding(.horizontal)
                 
                 Spacer()
                 
-                Button {
-                    Task {
-                        await skipToNextSong()
-                    }
-                } label: {
-                    Label("", systemImage: "forward.fill")
-                        .tint(.white)
-                }
-                
-                Spacer()
-                
-                // Song Timer
+                // MARK: - Song Timer
                 if songTimer > 0 {
                     ZStack {
                         if isSongTimerDisplayed {
@@ -217,6 +212,19 @@ struct PlayBackView: View {
                     })
                 }
                 
+                Button(action: {
+                    Task {
+                        await skipToNextSong()
+                    }
+                }, label: {
+                    Text("Skip Song")
+                        .frame(maxWidth: .infinity)
+                })
+                .buttonStyle(.borderedProminent)
+                .padding()
+                .font(.largeTitle)
+                .tint(.purple)
+                
                 // Play/Pause Button
                 Button(action: {
                     handlePlayButton()
@@ -234,57 +242,65 @@ struct PlayBackView: View {
                 HStack {
                     AirPlayButtonView()
                         .frame(height: 50)
-                    
-                    Button(action: {
-                        showSettings = true
-                        player.pause()
-                        playState = .pause
-                        isTimerActive = false
-                    }) {
-                        Image(systemName: "gear")
-                            .foregroundStyle(.white)
-                            .font(.system(size: 24))
+                        .tint(colorScheme == .dark ? .white : .black)
+                }
+            }
+            .onAppear {
+                songTimer = Int.random(in: 5...30)
+                roundTimer = 5
+                
+                Task {
+                    await loadPlaylistAndSetQueue()
+                }
+            }
+            .onDisappear {
+                player.stop()
+                player.queue = []
+                player.playbackTime = .zero
+                player.queue.currentEntry = nil
+            }
+            .onChange(of: player.queue.currentEntry?.item) {
+                switch player.queue.currentEntry?.item {
+                case .song(let song):
+                    self.songTitle = song.title
+                    self.songArtistName = song.artistName
+                    if let duration = song.duration, let albumTitle = song.albumTitle {
+                        self.songDuration = duration
+                        self.songAlbumTitle = albumTitle
                     }
+                    self.songArtwork = song.artwork
+                default:
+                    break
                 }
-        }
-        .onAppear {
-            songTimer = Int.random(in: 5...30)
-            roundTimer = 5
+            }
+            .onChange(of: playlist) {
+                Task {
+                    await loadPlaylistAndSetQueue()
+                }
+            }
+            .sheet(isPresented: $showSettings) {
+                Task {
+                    playState = .play
+                    await playTrack()
+                    isTimerActive = true
+                }
+            } content: {
+                SettingsView(songTimer: $currentSongTimer, roundTimer: $currentRoundTimer, isSongTimerRandom: $isSongTimerRandom, isRoundTimerRandom: $isRoundTimerRandom, isSongTimerDisplayed: $isSongTimerDisplayed, isRoundTimerDisplayed: $isRoundTimerDisplayed, playlist: $playlist, isShuffled: $isShuffled)
+            }
+            .toolbar {
+                Button(action: {
+                    showSettings = true
+                    player.pause()
+                    playState = .pause
+                    isTimerActive = false
+                }) {
+                    Image(systemName: "gear")
+                        .foregroundStyle(colorScheme == .dark ? Color.white : Color.black)
+                        .font(.system(size: 20))
+                }
+            }
             
-            Task {
-                await loadPlaylistAndSetQueue()
-            }
         }
-        .onDisappear {
-            player.stop()
-            player.queue = []
-            player.playbackTime = .zero
-            player.queue.currentEntry = nil
-        }
-        .onChange(of: player.queue.currentEntry?.item) {
-            switch player.queue.currentEntry?.item {
-            case .song(let song):
-                self.songTitle = song.title
-                self.songArtistName = song.artistName
-                if let duration = song.duration, let albumTitle = song.albumTitle {
-                    self.songDuration = duration
-                    self.songAlbumTitle = albumTitle
-                }
-                self.songArtwork = song.artwork
-            default:
-                break
-            }
-        }
-        .sheet(isPresented: $showSettings) {
-            Task {
-                playState = .play
-                await playTrack()
-                isTimerActive = true
-            }
-        } content: {
-            SettingsView(songTimer: $currentSongTimer, roundTimer: $currentRoundTimer, isSongTimerRandom: $isSongTimerRandom, isRoundTimerRandom: $isRoundTimerRandom, isSongTimerDisplayed: $isSongTimerDisplayed, isRoundTimerDisplayed: $isRoundTimerDisplayed)
-        }
-
     }
     
     private func handlePlayButton() {
@@ -346,13 +362,18 @@ struct PlayBackView: View {
         if let playlist = playlist {
             do {
                 let detailedPlaylist = try await playlist.with([.entries])
-                if let firstSong = detailedPlaylist.entries?.first {
-                    player.queue = .init(playlist: detailedPlaylist, startingAt: firstSong)
-                    songTitle = firstSong.title
-                    songArtistName = firstSong.artistName
-                    songAlbumTitle = firstSong.albumTitle ?? "Album Title Not Found"
-                    songArtwork = firstSong.artwork
-                    songDuration = firstSong.duration ?? 0
+                if let entries = detailedPlaylist.entries {
+                    player.state.shuffleMode = isShuffled ? .songs : .off
+                    
+                    if let firstSong = isShuffled ? entries.randomElement() : entries.first {
+                        player.queue = .init(playlist: detailedPlaylist, startingAt: firstSong)
+                        
+                        songTitle = firstSong.title
+                        songArtistName = firstSong.artistName
+                        songAlbumTitle = firstSong.albumTitle ?? "Album Title Not Found"
+                        songArtwork = firstSong.artwork
+                        songDuration = firstSong.duration ?? 0
+                    }
                 }
             } catch {
                 print("Failed to load playlist entries: \(error.localizedDescription)")

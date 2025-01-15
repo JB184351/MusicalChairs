@@ -14,18 +14,18 @@ struct ContentView: View {
     @State private var arePlaylistsShowing = false
     @State var playlists = [Playlist]()
     
-    @State private var selection: Playlist? = nil
     @State private var isPlaylistSheetShowing = false
     private let playlistsKey = "cached_playlists"
-    
+    @State private var selection: Playlist?
+
     var body: some View {
         Group {
             if musicAuthorizationStatus == .authorized {
-                NavigationStack {
+                NavigationSplitView {
                     List(playlists, id: \.self, selection: $selection) { playlist in
-                        NavigationLink(destination: PlayBackView(playlist: playlist)) {
-                            PlaylistRowView(playlist: playlist)
-                        }
+                        PlaylistRowView(playlist: playlist)
+                            .contentShape(Rectangle())
+                            .background(selection == playlist ? Color.gray.opacity(0.2) : Color.clear)
                     }
                     .listStyle(.plain)
                     .navigationTitle("Playlists")
@@ -35,6 +35,15 @@ struct ContentView: View {
                                 .init {
                                     Text("Playlists loading...")
                                 }
+                        }
+                    }
+                } detail: {
+                    if let selectedPlaylist = selection {
+                        PlayBackView(playlist: selectedPlaylist)
+                            .id(selectedPlaylist.id)
+                    } else {
+                        ContentUnavailableView {
+                            Text("No playlist selected")
                         }
                     }
                 }
@@ -47,9 +56,7 @@ struct ContentView: View {
             
             if musicAuthorizationStatus == .authorized {
                 if let cachedPlaylists = loadPlaylistsFromCache() {
-//                    withAnimation {
-                        self.playlists = cachedPlaylists
-//                    }
+                    self.playlists = cachedPlaylists
                 }
             }
             
@@ -71,9 +78,7 @@ struct ContentView: View {
     
     @MainActor
     private func setPlaylists(_ playlists: MusicItemCollection<Playlist>) {
-        withAnimation {
-            self.playlists = Array(playlists)
-        }
+        self.playlists = Array(playlists)
     }
     
     @MainActor
@@ -104,9 +109,7 @@ struct ContentView: View {
             let libraryPlaylists = try decoder.decode(MusicItemCollection<Playlist>.self, from: libraryPlaylistResponse.data)
             let playlistArray = Array(libraryPlaylists)
             
-//            withAnimation {
-                self.playlists = playlistArray
-//            }
+            self.playlists = playlistArray
             
             // Cache the playlists
             try cachePlaylistsToUserDefaults(playlistArray)

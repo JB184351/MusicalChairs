@@ -16,6 +16,7 @@ struct ContentView: View {
     
     @State private var selection: Playlist? = nil
     @State private var isPlaylistSheetShowing = false
+    private let playlistsKey = "cached_playlists"
     
     var body: some View {
         Group {
@@ -45,8 +46,14 @@ struct ContentView: View {
             await checkAuthorization()
             
             if musicAuthorizationStatus == .authorized {
-                await loadPlaylists()
+                if let cachedPlaylists = loadPlaylistsFromCache() {
+//                    withAnimation {
+                        self.playlists = cachedPlaylists
+//                    }
+                }
             }
+            
+            await loadPlaylists()
         }
     }
     
@@ -95,11 +102,30 @@ struct ContentView: View {
             
             let decoder = JSONDecoder()
             let libraryPlaylists = try decoder.decode(MusicItemCollection<Playlist>.self, from: libraryPlaylistResponse.data)
-            setPlaylists(libraryPlaylists)
+            let playlistArray = Array(libraryPlaylists)
+            
+//            withAnimation {
+                self.playlists = playlistArray
+//            }
+            
+            // Cache the playlists
+            try cachePlaylistsToUserDefaults(playlistArray)
         } catch {
             print(error.localizedDescription)
             setPlaylists(MusicItemCollection<Playlist>())
         }
+    }
+    
+    private func cachePlaylistsToUserDefaults(_ playlists: [Playlist]) throws {
+        let encoder = JSONEncoder()
+        let data = try encoder.encode(playlists)
+        UserDefaults.standard.set(data, forKey: playlistsKey)
+    }
+    
+    private func loadPlaylistsFromCache() -> [Playlist]? {
+        guard let data = UserDefaults.standard.data(forKey: playlistsKey) else { return nil }
+        let decoder = JSONDecoder()
+        return try? decoder.decode([Playlist].self, from: data)
     }
 }
 

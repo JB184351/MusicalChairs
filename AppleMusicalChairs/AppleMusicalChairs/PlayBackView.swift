@@ -59,78 +59,14 @@ struct PlayBackView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                HStack(spacing: 50) {
-                    Image(systemName: "music.note")
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                        .rotationEffect(.degrees(isDancing ? 15 : -15))
-                        .scaleEffect(1.0)
-                        .offset(x: isDancing ? 10 : -10, y: 0)
-                        .foregroundStyle(.red)
-                    
-                    Image(systemName: "chair")
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                        .rotationEffect(.degrees(isDancing ? 15 : -15))
-                        .scaleEffect(1.0)
-                        .offset(x: isDancing ? 10 : -10, y: 0)
-                        .foregroundStyle(.red)
-                    
-                    Image(systemName: "chair")
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                        .rotationEffect(.degrees(isDancing ? 15 : -15))
-                        .scaleEffect(1.0)
-                        .offset(x: isDancing ? 10 : -10, y: 0)
-                        .foregroundStyle(.red)
-                    
-                    Image(systemName: "music.note")
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                        .rotationEffect(.degrees(isDancing ? 15 : -15))
-                        .scaleEffect(1.0)
-                        .offset(x: isDancing ? 10 : -10, y: 0)
-                        .foregroundStyle(.red)
-                }
-                .padding()
+                DancingIconsView(isDancing: $isDancing)
                 
-                Spacer()
+                Spacer().frame(maxHeight: UIDevice.current.userInterfaceIdiom == .pad ? 20 : 40)
                 
                 // MARK: - Song Information
+                SongInformationView(songTitle: $songTitle, songAlbumTitle: $songAlbumTitle, songArtistName: $songArtistName, songArtwork: $songArtwork)
                 
-                // Album Cover
-                HStack(spacing: 20) {
-                    if let artwork = songArtwork {
-                        ArtworkImage(artwork, height: 150)
-                    } else {
-                        Image(systemName: "music.note")
-                            .resizable()
-                            .frame(width: 100, height: 100)
-                    }
-                    
-                    VStack(alignment: .leading) {
-                        // Song Title
-                        Text(songTitle)
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .fixedSize(horizontal: false, vertical: true)
-                        
-                        // Album Title
-                        Text(songAlbumTitle)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                            .fixedSize(horizontal: false, vertical: true)
-                        
-                        // Artist Name
-                        Text(songArtistName)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                }
-                .padding()
-                
-                Spacer()
+                Spacer().frame(maxHeight: UIDevice.current.userInterfaceIdiom == .pad ? 20 : 40)
                 
                 // MARK: - Current Playback/Duration View
                 
@@ -152,7 +88,7 @@ struct PlayBackView: View {
                 }
                 .padding(.horizontal)
                 
-                Spacer()
+                Spacer().frame(maxHeight: UIDevice.current.userInterfaceIdiom == .pad ? 20 : 40)
                 
                 // MARK: - Volume Slider/SKip Button
                 
@@ -166,7 +102,7 @@ struct PlayBackView: View {
                 .frame(height: 15)
                 .padding(.horizontal)
                 
-                Spacer()
+                Spacer().frame(maxHeight: UIDevice.current.userInterfaceIdiom == .pad ? 20 : 40)
                 
                 // MARK: - Song Timer
                 if songTimer > 0 {

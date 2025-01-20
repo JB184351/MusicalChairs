@@ -34,6 +34,7 @@ struct PlayBackView: View {
     @State private var songDuration = TimeInterval(0)
     
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     private let player = ApplicationMusicPlayer.shared
     
@@ -61,12 +62,12 @@ struct PlayBackView: View {
             VStack {
                 DancingIconsView(isDancing: $isDancing)
                 
-                Spacer().frame(maxHeight: UIDevice.current.userInterfaceIdiom == .pad ? 20 : 40)
+                Spacer()
                 
                 // MARK: - Song Information
                 SongInformationView(songTitle: $songTitle, songAlbumTitle: $songAlbumTitle, songArtistName: $songArtistName, songArtwork: $songArtwork)
                 
-                Spacer().frame(maxHeight: UIDevice.current.userInterfaceIdiom == .pad ? 20 : 40)
+                Spacer()
                 
                 // MARK: - Current Playback/Duration View
                 
@@ -88,7 +89,11 @@ struct PlayBackView: View {
                 }
                 .padding(.horizontal)
                 
-                Spacer().frame(maxHeight: UIDevice.current.userInterfaceIdiom == .pad ? 20 : 40)
+                if UIDevice.current.userInterfaceIdiom == .pad && UIDevice.current.orientation.isPortrait {
+                    Spacer().frame(maxHeight: 80)
+                } else {
+                    Spacer()
+                }
                 
                 // MARK: - Volume Slider/SKip Button
                 
@@ -102,7 +107,7 @@ struct PlayBackView: View {
                 .frame(height: 15)
                 .padding(.horizontal)
                 
-                Spacer().frame(maxHeight: UIDevice.current.userInterfaceIdiom == .pad ? 20 : 40)
+                Spacer()
                 
                 // MARK: - Song Timer
                 if songTimer > 0 {

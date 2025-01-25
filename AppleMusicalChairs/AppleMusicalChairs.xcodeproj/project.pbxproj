@@ -23,7 +23,7 @@
 
 /* Begin PBXFileReference section */
 		304046B62C8BBB7F00BF5D9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		30599DAD2C6C15E100842A96 /* AppleMusicalChairs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppleMusicalChairs.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		30599DAD2C6C15E100842A96 /* Musical Thrones.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Musical Thrones.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		30599DB02C6C15E100842A96 /* AppleMusicalChairsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusicalChairsApp.swift; sourceTree = "<group>"; };
 		30599DB22C6C15E100842A96 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		30599DB42C6C15E200842A96 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -60,7 +60,7 @@
 		30599DAE2C6C15E100842A96 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				30599DAD2C6C15E100842A96 /* AppleMusicalChairs.app */,
+				30599DAD2C6C15E100842A96 /* Musical Thrones.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -110,7 +110,7 @@
 			);
 			name = AppleMusicalChairs;
 			productName = AppleMusicalChairs;
-			productReference = 30599DAD2C6C15E100842A96 /* AppleMusicalChairs.app */;
+			productReference = 30599DAD2C6C15E100842A96 /* Musical Thrones.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -236,6 +236,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "Musical Thrones";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -292,6 +293,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "Musical Thrones";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
@@ -323,7 +325,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.justinbengtson.AppleMusicalChairs;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Musical Thrones";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -359,7 +361,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.justinbengtson.AppleMusicalChairs;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Musical Thrones";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

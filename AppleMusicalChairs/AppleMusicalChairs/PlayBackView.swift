@@ -93,6 +93,7 @@ struct PlayBackView: View {
                         .foregroundStyle(.red)
                 }
                 .padding()
+                .accessibilityHidden(true)
                 
                 Spacer()
                 
@@ -102,10 +103,12 @@ struct PlayBackView: View {
                 HStack(spacing: 20) {
                     if let artwork = songArtwork {
                         ArtworkImage(artwork, height: 150)
+                            .accessibilityHidden(true)
                     } else {
                         Image(systemName: "music.note")
                             .resizable()
                             .frame(width: 100, height: 100)
+                            .accessibilityHidden(true)
                     }
                     
                     VStack(alignment: .leading) {
@@ -127,6 +130,8 @@ struct PlayBackView: View {
                             .foregroundColor(.secondary)
                             .fixedSize(horizontal: false, vertical: true)
                     }
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel(Text("\(songTitle) by \(songArtistName) from \(songAlbumTitle)"))
                 }
                 .padding()
                 
@@ -139,6 +144,7 @@ struct PlayBackView: View {
                     .progressViewStyle(.linear)
                     .tint(.red.opacity(0.5))
                     .padding(.horizontal)
+                    .accessibilityHidden(true)
                 
                 // Duration View
                 HStack {
@@ -151,6 +157,7 @@ struct PlayBackView: View {
                         .font(.caption)
                 }
                 .padding(.horizontal)
+                .accessibilityElement(children: .ignore)
                 
                 Spacer()
                 
@@ -158,10 +165,12 @@ struct PlayBackView: View {
                 
                 HStack {
                     Image(systemName: "speaker")
+                        .accessibilityHidden(true)
                     
                     VolumeSliderView()
                     
                     Image(systemName: speakerImage)
+                        .accessibilityHidden(true)
                 }
                 .frame(height: 15)
                 .padding(.horizontal)

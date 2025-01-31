@@ -237,6 +237,7 @@ struct PlayBackView: View {
                 .padding()
                 .font(.largeTitle)
                 .tint(.red)
+                .disabled(songTimer == 0)
                 
                 // Make Airplay Icon and Settings Icon bigger
                 HStack {

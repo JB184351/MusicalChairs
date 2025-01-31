@@ -13,10 +13,17 @@ struct ContentView: View {
     @State var musicAuthorizationStatus: MusicAuthorization.Status
     @State private var arePlaylistsShowing = false
     @State var playlists = [Playlist]()
-    
+    @State private var musicSubscription: MusicSubscription?
+    @State private var offerOptions: MusicSubscriptionOffer.Options = .default
     @State private var selection: Playlist? = nil
     @State private var isPlaylistSheetShowing = false
+    @State private var isSubscriptionSheetShowing = false
+    
     private let playlistsKey = "cached_playlists"
+    private var shouldOffersMusicSubscription: Bool {
+        guard let currentmusicSubscription = musicSubscription else { return true }
+        return !currentmusicSubscription.canPlayCatalogContent
+    }
     
     var body: some View {
         Group {
@@ -46,15 +53,16 @@ struct ContentView: View {
             await checkAuthorization()
             
             if musicAuthorizationStatus == .authorized {
+                await checkSubscriptionStatus()
+                
                 if let cachedPlaylists = loadPlaylistsFromCache() {
-//                    withAnimation {
-                        self.playlists = cachedPlaylists
-//                    }
+                    self.playlists = cachedPlaylists
+                } else {
+                    await loadPlaylists()
                 }
             }
-            
-            await loadPlaylists()
         }
+        .musicSubscriptionOffer(isPresented: $isSubscriptionSheetShowing, options: offerOptions)
     }
     
     // MARK: - Initializers
@@ -73,6 +81,18 @@ struct ContentView: View {
     private func setPlaylists(_ playlists: MusicItemCollection<Playlist>) {
         withAnimation {
             self.playlists = Array(playlists)
+        }
+    }
+    
+    @MainActor
+    private func checkSubscriptionStatus() async {
+        do {
+            musicSubscription = try await MusicSubscription.current
+            if shouldOffersMusicSubscription {
+                isSubscriptionSheetShowing = true
+            }
+        } catch {
+            print("Failed to fetch subscription status: \(error)")
         }
     }
     
@@ -104,9 +124,7 @@ struct ContentView: View {
             let libraryPlaylists = try decoder.decode(MusicItemCollection<Playlist>.self, from: libraryPlaylistResponse.data)
             let playlistArray = Array(libraryPlaylists)
             
-//            withAnimation {
-                self.playlists = playlistArray
-//            }
+            self.playlists = playlistArray
             
             // Cache the playlists
             try cachePlaylistsToUserDefaults(playlistArray)

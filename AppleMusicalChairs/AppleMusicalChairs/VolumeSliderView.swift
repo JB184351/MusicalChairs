@@ -7,13 +7,12 @@
 
 import SwiftUI
 import MediaPlayer
-import UIKit
 
 struct VolumeSliderView: UIViewRepresentable {
     func makeUIView(context: Context) -> MPVolumeView {
-        let volumeView = MPVolumeView()
+        let volumeView = MPVolumeView(frame: .zero)
         volumeView.showsVolumeSlider = true
-        volumeView.tintColor = .white
+        volumeView.tintColor = .red
         return volumeView
     }
     

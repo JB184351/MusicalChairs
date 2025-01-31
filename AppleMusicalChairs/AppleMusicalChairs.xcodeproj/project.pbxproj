@@ -13,16 +13,29 @@
 		30599DB82C6C15E200842A96 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30599DB72C6C15E200842A96 /* Preview Assets.xcassets */; };
 		30599DBF2C6C201400842A96 /* PlayState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DBE2C6C201400842A96 /* PlayState.swift */; };
 		30599DC12C6D5C4D00842A96 /* VolumeSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DC02C6D5C4D00842A96 /* VolumeSliderView.swift */; };
+		30599DC32C6FE4ED00842A96 /* PlayBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DC22C6FE4ED00842A96 /* PlayBackView.swift */; };
+		30599DC52C6FE7AE00842A96 /* PlaylistRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DC42C6FE7AE00842A96 /* PlaylistRowView.swift */; };
+		30599DC72C6FF68A00842A96 /* AppleMusicPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DC62C6FF68A00842A96 /* AppleMusicPermissionView.swift */; };
+		306B58392C939B6A00AF50E1 /* AirPlayButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306B58382C939B6A00AF50E1 /* AirPlayButtonView.swift */; };
+		306B583B2C93A82000AF50E1 /* VolumeObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306B583A2C93A82000AF50E1 /* VolumeObserver.swift */; };
+		30BF5B9B2CC1DB1900BF0196 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BF5B9A2CC1DB1900BF0196 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		30599DAD2C6C15E100842A96 /* AppleMusicalChairs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppleMusicalChairs.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		304046B62C8BBB7F00BF5D9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		30599DAD2C6C15E100842A96 /* Musical Thrones.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Musical Thrones.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		30599DB02C6C15E100842A96 /* AppleMusicalChairsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusicalChairsApp.swift; sourceTree = "<group>"; };
 		30599DB22C6C15E100842A96 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		30599DB42C6C15E200842A96 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		30599DB72C6C15E200842A96 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		30599DBE2C6C201400842A96 /* PlayState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayState.swift; sourceTree = "<group>"; };
 		30599DC02C6D5C4D00842A96 /* VolumeSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeSliderView.swift; sourceTree = "<group>"; };
+		30599DC22C6FE4ED00842A96 /* PlayBackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayBackView.swift; sourceTree = "<group>"; };
+		30599DC42C6FE7AE00842A96 /* PlaylistRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistRowView.swift; sourceTree = "<group>"; };
+		30599DC62C6FF68A00842A96 /* AppleMusicPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusicPermissionView.swift; sourceTree = "<group>"; };
+		306B58382C939B6A00AF50E1 /* AirPlayButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirPlayButtonView.swift; sourceTree = "<group>"; };
+		306B583A2C93A82000AF50E1 /* VolumeObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeObserver.swift; sourceTree = "<group>"; };
+		30BF5B9A2CC1DB1900BF0196 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,7 +60,7 @@
 		30599DAE2C6C15E100842A96 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				30599DAD2C6C15E100842A96 /* AppleMusicalChairs.app */,
+				30599DAD2C6C15E100842A96 /* Musical Thrones.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -55,9 +68,16 @@
 		30599DAF2C6C15E100842A96 /* AppleMusicalChairs */ = {
 			isa = PBXGroup;
 			children = (
+				304046B62C8BBB7F00BF5D9B /* Info.plist */,
 				30599DB02C6C15E100842A96 /* AppleMusicalChairsApp.swift */,
+				30599DC62C6FF68A00842A96 /* AppleMusicPermissionView.swift */,
 				30599DB22C6C15E100842A96 /* ContentView.swift */,
+				30599DC42C6FE7AE00842A96 /* PlaylistRowView.swift */,
+				30599DC22C6FE4ED00842A96 /* PlayBackView.swift */,
+				30BF5B9A2CC1DB1900BF0196 /* SettingsView.swift */,
+				306B583A2C93A82000AF50E1 /* VolumeObserver.swift */,
 				30599DC02C6D5C4D00842A96 /* VolumeSliderView.swift */,
+				306B58382C939B6A00AF50E1 /* AirPlayButtonView.swift */,
 				30599DBE2C6C201400842A96 /* PlayState.swift */,
 				30599DB42C6C15E200842A96 /* Assets.xcassets */,
 				30599DB62C6C15E200842A96 /* Preview Content */,
@@ -90,7 +110,7 @@
 			);
 			name = AppleMusicalChairs;
 			productName = AppleMusicalChairs;
-			productReference = 30599DAD2C6C15E100842A96 /* AppleMusicalChairs.app */;
+			productReference = 30599DAD2C6C15E100842A96 /* Musical Thrones.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -143,10 +163,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30599DC52C6FE7AE00842A96 /* PlaylistRowView.swift in Sources */,
 				30599DB32C6C15E100842A96 /* ContentView.swift in Sources */,
+				30599DC72C6FF68A00842A96 /* AppleMusicPermissionView.swift in Sources */,
 				30599DB12C6C15E100842A96 /* AppleMusicalChairsApp.swift in Sources */,
 				30599DBF2C6C201400842A96 /* PlayState.swift in Sources */,
 				30599DC12C6D5C4D00842A96 /* VolumeSliderView.swift in Sources */,
+				306B583B2C93A82000AF50E1 /* VolumeObserver.swift in Sources */,
+				30599DC32C6FE4ED00842A96 /* PlayBackView.swift in Sources */,
+				306B58392C939B6A00AF50E1 /* AirPlayButtonView.swift in Sources */,
+				30BF5B9B2CC1DB1900BF0196 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,6 +236,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "Musical Thrones";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -266,6 +293,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "Musical Thrones";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
@@ -283,21 +311,28 @@
 				DEVELOPMENT_TEAM = H9AZCNDQS4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AppleMusicalChairs/Info.plist;
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Need your playlists to play musical chairs!";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.justinbengtson.AppleMusicalChairs;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Musical Thrones";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -312,21 +347,28 @@
 				DEVELOPMENT_TEAM = H9AZCNDQS4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AppleMusicalChairs/Info.plist;
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Need your playlists to play musical chairs!";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.justinbengtson.AppleMusicalChairs;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Musical Thrones";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

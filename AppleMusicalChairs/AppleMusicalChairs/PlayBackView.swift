@@ -181,7 +181,7 @@ struct PlayBackView: View {
                 if songTimer > 0 {
                     ZStack {
                         if isSongTimerDisplayed {
-                            Text("Will pause in \(songTimer) seconds.")
+                            Text("Will pause in \(songTimer) \(songTimer == 1 ? "second" : "seconds").")
                                 .fontWeight(.medium)
                         }
                     }
@@ -205,7 +205,7 @@ struct PlayBackView: View {
                     // Round Timer
                     ZStack {
                         if isRoundTimerDisplayed {
-                            Text("Next round starts in \(roundTimer) seconds.")
+                            Text("Next round starts in \(roundTimer) \(roundTimer == 1 ? "second" : "seconds").")
                                 .fontWeight(.medium)
                         }
                     }

@@ -84,7 +84,6 @@ struct SettingsView: View {
                             .foregroundColor(.secondary)
                     } else {
                         Picker("Select Playlist", selection: $playlist) {
-                            Text("None").tag(Optional<Playlist>.none)
                             ForEach(playlists, id: \.id) { playlist in
                                 Text(playlist.name).tag(Optional(playlist))
                             }

@@ -10,6 +10,7 @@ import MusicKit
 
 struct ContentView: View {
     @Environment(\.openURL) private var openURL
+    @Environment(\.colorScheme) private var colorScheme
     @State var musicAuthorizationStatus: MusicAuthorization.Status
     @State private var arePlaylistsShowing = false
     @State var playlists = [Playlist]()
@@ -18,8 +19,10 @@ struct ContentView: View {
     @State private var selection: Playlist? = nil
     @State private var isPlaylistSheetShowing = false
     @State private var isSubscriptionSheetShowing = false
+    @State private var isLoadingPlaylists = true
     
     private let playlistsKey = "cached_playlists"
+    private let defaultPlaylistName = "Welcome Playlist"
     private var shouldOffersMusicSubscription: Bool {
         guard let currentmusicSubscription = musicSubscription else { return true }
         return !currentmusicSubscription.canPlayCatalogContent
@@ -38,10 +41,44 @@ struct ContentView: View {
                     .navigationTitle("Playlists")
                     .overlay {
                         if playlists.isEmpty {
-                            ContentUnavailableView
-                                .init {
-                                    Text("Playlists loading...")
+                            if isLoadingPlaylists {
+                                ProgressView("Loading Playlists...")
+                            } else {
+                                ContentUnavailableView {
+                                    Label {
+                                        Text(shouldOffersMusicSubscription ? "Apple Music Subscription Required" : "No Playlists Found")
+                                    } icon: {
+                                        Image(colorScheme == .dark ? "Apple_Music_Icon" : "Apple_Music_Icon_Dark")
+                                            .resizable()
+                                            .frame(width: 90, height: 90)
+                                            .shadow(color: .gray.opacity(0.3), radius: 16)
+                                            .padding(.bottom, 12)
+                                    }
+                                    .padding(.bottom, 24)
+                                   
+                                } actions: {
+                                    if shouldOffersMusicSubscription {
+                                        Button {
+                                            isSubscriptionSheetShowing = true
+                                        } label: {
+                                            Text("Subscribe to Apple Music")
+                                                .font(.title3)
+                                                .padding(4)
+                                        }
+                                        .buttonStyle(.borderedProminent)
+                                        .tint(.red)
+                                        
+                                    } else {
+                                        Button("Create Default Playlist") {
+                                            Task {
+                                                await createDefaultPlaylist()
+                                            }
+                                        }
+                                        .buttonStyle(.borderedProminent)
+                                        .tint(.red)
+                                    }
                                 }
+                            }
                         }
                     }
                 }
@@ -60,6 +97,9 @@ struct ContentView: View {
                 } else {
                     await loadPlaylists()
                 }
+                
+                try? await Task.sleep(for: .seconds(2))
+                isLoadingPlaylists = false
             }
         }
         .musicSubscriptionOffer(isPresented: $isSubscriptionSheetShowing, options: offerOptions)
@@ -93,6 +133,10 @@ struct ContentView: View {
             }
         } catch {
             print("Failed to fetch subscription status: \(error)")
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                isSubscriptionSheetShowing = true
+            }
         }
     }
     
@@ -131,6 +175,33 @@ struct ContentView: View {
         } catch {
             print(error.localizedDescription)
             setPlaylists(MusicItemCollection<Playlist>())
+        }
+    }
+    
+    @MainActor
+    private func createDefaultPlaylist() async {
+        do {
+            let url = URL(string: "https://api.music.apple.com/v1/me/library/playlists")!
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            let playlistData = [
+                "attributes": [
+                    "name": defaultPlaylistName,
+                    "description": "Welcome to Musical Chairs!"
+                ]
+            ]
+            
+            request.httpBody = try JSONSerialization.data(withJSONObject: playlistData)
+            
+            let libraryPlaylistRequest = MusicDataRequest(urlRequest: request)
+            _ = try await libraryPlaylistRequest.response()
+            
+            // Reload playlists to include the newly created one
+            await loadPlaylists()
+        } catch {
+            print("Failed to create default playlist: \(error)")
         }
     }
     

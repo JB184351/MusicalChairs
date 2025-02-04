@@ -10,11 +10,12 @@ import MusicKit
 
 struct AppleMusicPermissionView: View {
     @Environment(\.openURL) private var openURL
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         VStack(spacing: 130) {
             VStack(alignment: .leading, spacing: 10) {
-                Image(systemName: "music.note.list")
+                Image(colorScheme == .dark ? "Apple_Music_Icon" : "Apple_Music_Icon_Dark")
                     .resizable()
                     .frame(width: 90, height: 90)
                     .shadow(color: .gray.opacity(0.3), radius: 16)
@@ -34,6 +35,7 @@ struct AppleMusicPermissionView: View {
             }
             .buttonStyle(.borderedProminent)
             .tint(.red)
+            .font(.title2)
             
         }
         .padding(30)

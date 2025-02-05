@@ -17,6 +17,7 @@ struct SettingsView: View {
     @Binding var isRoundTimerDisplayed: Bool
     @Binding var playlist: Playlist?
     @Binding var isShuffled: Bool
+    @Binding var shouldTimerResetOnSkip: Bool
     @State private var playlists: [Playlist] = []
     
     var body: some View {
@@ -34,6 +35,7 @@ struct SettingsView: View {
                     } maximumValueLabel: {
                         Text("45")
                     }
+                    .disabled(isSongTimerRandom)
                     Text("\(songTimer) seconds")
                 }
                 
@@ -49,6 +51,7 @@ struct SettingsView: View {
                     } maximumValueLabel: {
                         Text("15")
                     }
+                    .disabled(isRoundTimerRandom)
                     Text("\(roundTimer) seconds")
                 }
                 
@@ -57,6 +60,8 @@ struct SettingsView: View {
                     footer: Text("""
                              Song Timer will be between 5-45 Seconds
                              Round Timer will be between 5-15 Seconds
+                             Turning this option on will also override
+                             the previously set timers
                             """)
                 ) {
                     Toggle("Random Song Timer", isOn: $isSongTimerRandom)
@@ -70,6 +75,12 @@ struct SettingsView: View {
                     Text("Timer Display Options")
                 } footer: {
                     Text("This will show the remaining time the song or round has left")
+                }
+                
+                Section() {
+                    Toggle("Reset Timer on song skip", isOn: $shouldTimerResetOnSkip)
+                } footer: {
+                    Text("Turning on this option will reset the timer when a song is skipped")
                 }
                 
                 Section() {

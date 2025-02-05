@@ -10,22 +10,23 @@ import MusicKit
 
 struct PlayBackView: View {
     @State var playlist: Playlist?
-    @AppStorage("isShuffled") var isShuffled = true
     @State private var playState: PlayState = .pause
     @State private var songTimer: Int = 0
     @State private var roundTimer: Int = 0
-    @State private var currentSongTimer: Int = 30
-    @State private var currentRoundTimer: Int = 5
     @State private var isTimerActive = false
     @State private var volumeValue = VolumeObserver()
     @State private var isFirstPlay = true
     @State private var isDancing = false
     @State private var showSettings = false
     
-    @State private var isSongTimerRandom = false
-    @State private var isRoundTimerRandom = false
-    @State private var isSongTimerDisplayed = false
-    @State private var isRoundTimerDisplayed = false
+    @AppStorage("isShuffled") private var isShuffled = true
+    @AppStorage("currentSongTimer") private var currentSongTimer: Int = 30
+    @AppStorage("currentRoundTimer") private var currentRoundTimer: Int = 5
+    @AppStorage("isSongTimerRandom") private var isSongTimerRandom = false
+    @AppStorage("isRoundTimerRandom") private var isRoundTimerRandom = false
+    @AppStorage("isSongTimerDisplayed") private var isSongTimerDisplayed = false
+    @AppStorage("isRoundTimerDisplayed") private var isRoundTimerDisplayed = false
+    @AppStorage("shouldTimerResetOnSkip") private var shouldTimerResetOnSkip = false
     
     @State private var songTitle = ""
     @State private var songArtistName = ""
@@ -264,7 +265,7 @@ struct PlayBackView: View {
                     isTimerActive = true
                 }
             } content: {
-                SettingsView(songTimer: $currentSongTimer, roundTimer: $currentRoundTimer, isSongTimerRandom: $isSongTimerRandom, isRoundTimerRandom: $isRoundTimerRandom, isSongTimerDisplayed: $isSongTimerDisplayed, isRoundTimerDisplayed: $isRoundTimerDisplayed, playlist: $playlist, isShuffled: $isShuffled)
+                SettingsView(songTimer: $currentSongTimer, roundTimer: $currentRoundTimer, isSongTimerRandom: $isSongTimerRandom, isRoundTimerRandom: $isRoundTimerRandom, isSongTimerDisplayed: $isSongTimerDisplayed, isRoundTimerDisplayed: $isRoundTimerDisplayed, playlist: $playlist, isShuffled: $isShuffled, shouldTimerResetOnSkip: $shouldTimerResetOnSkip)
             }
             .toolbar {
                 Button(action: {
@@ -306,6 +307,10 @@ struct PlayBackView: View {
     }
     
     private func skipToNextSong() async {
+        if shouldTimerResetOnSkip {
+            resetTimers()
+        }
+        
         do {
             try await player.skipToNextEntry()
         } catch {

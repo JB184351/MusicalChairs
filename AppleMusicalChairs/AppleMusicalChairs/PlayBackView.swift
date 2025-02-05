@@ -10,18 +10,18 @@ import MusicKit
 
 struct PlayBackView: View {
     @State var playlist: Playlist?
-    @AppStorage("isShuffled") var isShuffled = true
     @State private var playState: PlayState = .pause
     @State private var songTimer: Int = 0
     @State private var roundTimer: Int = 0
-    @AppStorage("currentSongTimer") private var currentSongTimer: Int = 30
-    @AppStorage("currentRoundTimer") private var currentRoundTimer: Int = 5
     @State private var isTimerActive = false
     @State private var volumeValue = VolumeObserver()
     @State private var isFirstPlay = true
     @State private var isDancing = false
     @State private var showSettings = false
     
+    @AppStorage("isShuffled") private var isShuffled = true
+    @AppStorage("currentSongTimer") private var currentSongTimer: Int = 30
+    @AppStorage("currentRoundTimer") private var currentRoundTimer: Int = 5
     @AppStorage("isSongTimerRandom") private var isSongTimerRandom = false
     @AppStorage("isRoundTimerRandom") private var isRoundTimerRandom = false
     @AppStorage("isSongTimerDisplayed") private var isSongTimerDisplayed = false

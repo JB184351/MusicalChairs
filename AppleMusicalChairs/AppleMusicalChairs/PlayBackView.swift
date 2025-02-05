@@ -98,6 +98,7 @@ struct PlayBackView: View {
                             .foregroundColor(.secondary)
                             .fixedSize(horizontal: false, vertical: true)
                     }
+                    .frame(maxWidth: .infinity)
                     .accessibilityElement(children: .ignore)
                     .accessibilityLabel("\(songTitle) by \(songArtistName) from \(songAlbumTitle)")
                 }

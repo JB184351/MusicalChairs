@@ -34,6 +34,7 @@ struct SettingsView: View {
                     } maximumValueLabel: {
                         Text("45")
                     }
+                    .disabled(isSongTimerRandom)
                     Text("\(songTimer) seconds")
                 }
                 
@@ -49,6 +50,7 @@ struct SettingsView: View {
                     } maximumValueLabel: {
                         Text("15")
                     }
+                    .disabled(isRoundTimerRandom)
                     Text("\(roundTimer) seconds")
                 }
                 
@@ -57,6 +59,8 @@ struct SettingsView: View {
                     footer: Text("""
                              Song Timer will be between 5-45 Seconds
                              Round Timer will be between 5-15 Seconds
+                             Turning this option on will also override
+                             the previously set timers
                             """)
                 ) {
                     Toggle("Random Song Timer", isOn: $isSongTimerRandom)

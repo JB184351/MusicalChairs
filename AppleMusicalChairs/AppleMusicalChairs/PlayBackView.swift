@@ -22,10 +22,10 @@ struct PlayBackView: View {
     @State private var isDancing = false
     @State private var showSettings = false
     
-    @State private var isSongTimerRandom = false
-    @State private var isRoundTimerRandom = false
-    @State private var isSongTimerDisplayed = false
-    @State private var isRoundTimerDisplayed = false
+    @AppStorage("isSongTimerRandom") private var isSongTimerRandom = false
+    @AppStorage("isRoundTimerRandom") private var isRoundTimerRandom = false
+    @AppStorage("isSongTimerDisplayed") private var isSongTimerDisplayed = false
+    @AppStorage("isRoundTimerDisplayed") private var isRoundTimerDisplayed = false
     
     @State private var songTitle = ""
     @State private var songArtistName = ""

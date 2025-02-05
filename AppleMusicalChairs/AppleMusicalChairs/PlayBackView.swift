@@ -59,39 +59,7 @@ struct PlayBackView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                HStack(spacing: 50) {
-                    Image(systemName: "music.note")
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                        .rotationEffect(.degrees(isDancing ? 15 : -15))
-                        .scaleEffect(1.0)
-                        .offset(x: isDancing ? 10 : -10, y: 0)
-                        .foregroundStyle(.red)
-                    
-                    Image(systemName: "chair")
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                        .rotationEffect(.degrees(isDancing ? 15 : -15))
-                        .scaleEffect(1.0)
-                        .offset(x: isDancing ? 10 : -10, y: 0)
-                        .foregroundStyle(.red)
-                    
-                    Image(systemName: "chair")
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                        .rotationEffect(.degrees(isDancing ? 15 : -15))
-                        .scaleEffect(1.0)
-                        .offset(x: isDancing ? 10 : -10, y: 0)
-                        .foregroundStyle(.red)
-                    
-                    Image(systemName: "music.note")
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                        .rotationEffect(.degrees(isDancing ? 15 : -15))
-                        .scaleEffect(1.0)
-                        .offset(x: isDancing ? 10 : -10, y: 0)
-                        .foregroundStyle(.red)
-                }
+                DancingChairsView(isDancing: $isDancing)
                 .padding()
                 .accessibilityHidden(true)
                 
@@ -130,8 +98,9 @@ struct PlayBackView: View {
                             .foregroundColor(.secondary)
                             .fixedSize(horizontal: false, vertical: true)
                     }
+                    .frame(maxWidth: .infinity)
                     .accessibilityElement(children: .ignore)
-                    .accessibilityLabel(Text("\(songTitle) by \(songArtistName) from \(songAlbumTitle)"))
+                    .accessibilityLabel("\(songTitle) by \(songArtistName) from \(songAlbumTitle)")
                 }
                 .padding()
                 
@@ -181,7 +150,7 @@ struct PlayBackView: View {
                 if songTimer > 0 {
                     ZStack {
                         if isSongTimerDisplayed {
-                            Text("Will pause in \(songTimer) seconds.")
+                            Text("Will pause in \(songTimer) \(songTimer == 1 ? "second" : "seconds").")
                                 .fontWeight(.medium)
                         }
                     }
@@ -205,7 +174,7 @@ struct PlayBackView: View {
                     // Round Timer
                     ZStack {
                         if isRoundTimerDisplayed {
-                            Text("Next round starts in \(roundTimer) seconds.")
+                            Text("Next round starts in \(roundTimer) \(roundTimer == 1 ? "second" : "seconds").")
                                 .fontWeight(.medium)
                         }
                     }

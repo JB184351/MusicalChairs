@@ -55,8 +55,8 @@ struct SettingsView: View {
                 Section(
                     header: Text("Random Timer Options"),
                     footer: Text("""
-                             Song Timer Will Be Between 5-45 Seconds
-                             Round Timer Will Be Between 5-15 Seconds
+                             Song Timer will be between 5-45 Seconds
+                             Round Timer will be between 5-15 Seconds
                             """)
                 ) {
                     Toggle("Random Song Timer", isOn: $isSongTimerRandom)
@@ -84,7 +84,6 @@ struct SettingsView: View {
                             .foregroundColor(.secondary)
                     } else {
                         Picker("Select Playlist", selection: $playlist) {
-                            Text("None").tag(Optional<Playlist>.none)
                             ForEach(playlists, id: \.id) { playlist in
                                 Text(playlist.name).tag(Optional(playlist))
                             }

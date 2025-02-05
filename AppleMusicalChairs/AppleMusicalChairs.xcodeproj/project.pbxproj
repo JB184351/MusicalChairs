@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		303E7FCC2D52E1AE00F7F7FA /* DancingChairsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303E7FCB2D52E1AE00F7F7FA /* DancingChairsView.swift */; };
 		30599DB12C6C15E100842A96 /* AppleMusicalChairsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DB02C6C15E100842A96 /* AppleMusicalChairsApp.swift */; };
 		30599DB32C6C15E100842A96 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30599DB22C6C15E100842A96 /* ContentView.swift */; };
 		30599DB52C6C15E200842A96 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30599DB42C6C15E200842A96 /* Assets.xcassets */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		303E7FCB2D52E1AE00F7F7FA /* DancingChairsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DancingChairsView.swift; sourceTree = "<group>"; };
 		304046B62C8BBB7F00BF5D9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		30599DAD2C6C15E100842A96 /* Musical Thrones.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Musical Thrones.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		30599DB02C6C15E100842A96 /* AppleMusicalChairsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusicalChairsApp.swift; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 				30599DB22C6C15E100842A96 /* ContentView.swift */,
 				30599DC42C6FE7AE00842A96 /* PlaylistRowView.swift */,
 				30599DC22C6FE4ED00842A96 /* PlayBackView.swift */,
+				303E7FCB2D52E1AE00F7F7FA /* DancingChairsView.swift */,
 				30BF5B9A2CC1DB1900BF0196 /* SettingsView.swift */,
 				306B583A2C93A82000AF50E1 /* VolumeObserver.swift */,
 				30599DC02C6D5C4D00842A96 /* VolumeSliderView.swift */,
@@ -171,6 +174,7 @@
 				30599DC12C6D5C4D00842A96 /* VolumeSliderView.swift in Sources */,
 				306B583B2C93A82000AF50E1 /* VolumeObserver.swift in Sources */,
 				30599DC32C6FE4ED00842A96 /* PlayBackView.swift in Sources */,
+				303E7FCC2D52E1AE00F7F7FA /* DancingChairsView.swift in Sources */,
 				306B58392C939B6A00AF50E1 /* AirPlayButtonView.swift in Sources */,
 				30BF5B9B2CC1DB1900BF0196 /* SettingsView.swift in Sources */,
 			);

@@ -26,6 +26,7 @@ struct PlayBackView: View {
     @AppStorage("isRoundTimerRandom") private var isRoundTimerRandom = false
     @AppStorage("isSongTimerDisplayed") private var isSongTimerDisplayed = false
     @AppStorage("isRoundTimerDisplayed") private var isRoundTimerDisplayed = false
+    @AppStorage("shouldTimerResetOnSkip") private var shouldTimerResetOnSkip = false
     
     @State private var songTitle = ""
     @State private var songArtistName = ""
@@ -264,7 +265,7 @@ struct PlayBackView: View {
                     isTimerActive = true
                 }
             } content: {
-                SettingsView(songTimer: $currentSongTimer, roundTimer: $currentRoundTimer, isSongTimerRandom: $isSongTimerRandom, isRoundTimerRandom: $isRoundTimerRandom, isSongTimerDisplayed: $isSongTimerDisplayed, isRoundTimerDisplayed: $isRoundTimerDisplayed, playlist: $playlist, isShuffled: $isShuffled)
+                SettingsView(songTimer: $currentSongTimer, roundTimer: $currentRoundTimer, isSongTimerRandom: $isSongTimerRandom, isRoundTimerRandom: $isRoundTimerRandom, isSongTimerDisplayed: $isSongTimerDisplayed, isRoundTimerDisplayed: $isRoundTimerDisplayed, playlist: $playlist, isShuffled: $isShuffled, shouldTimerResetOnSkip: $shouldTimerResetOnSkip)
             }
             .toolbar {
                 Button(action: {
@@ -306,6 +307,10 @@ struct PlayBackView: View {
     }
     
     private func skipToNextSong() async {
+        if shouldTimerResetOnSkip {
+            resetTimers()
+        }
+        
         do {
             try await player.skipToNextEntry()
         } catch {

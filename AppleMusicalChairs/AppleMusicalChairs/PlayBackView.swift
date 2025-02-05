@@ -99,7 +99,7 @@ struct PlayBackView: View {
                             .fixedSize(horizontal: false, vertical: true)
                     }
                     .accessibilityElement(children: .ignore)
-                    .accessibilityLabel(Text("\(songTitle) by \(songArtistName) from \(songAlbumTitle)"))
+                    .accessibilityLabel("\(songTitle) by \(songArtistName) from \(songAlbumTitle)")
                 }
                 .padding()
                 

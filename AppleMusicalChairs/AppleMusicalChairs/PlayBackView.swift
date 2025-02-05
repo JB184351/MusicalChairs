@@ -14,8 +14,8 @@ struct PlayBackView: View {
     @State private var playState: PlayState = .pause
     @State private var songTimer: Int = 0
     @State private var roundTimer: Int = 0
-    @State private var currentSongTimer: Int = 30
-    @State private var currentRoundTimer: Int = 5
+    @AppStorage("currentSongTimer") private var currentSongTimer: Int = 30
+    @AppStorage("currentRoundTimer") private var currentRoundTimer: Int = 5
     @State private var isTimerActive = false
     @State private var volumeValue = VolumeObserver()
     @State private var isFirstPlay = true

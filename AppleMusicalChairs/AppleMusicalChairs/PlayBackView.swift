@@ -67,72 +67,17 @@ struct PlayBackView: View {
                 Spacer()
                 
                 // MARK: - Song Information
-                
-                // Album Cover
-                HStack(spacing: 20) {
-                    if let artwork = songArtwork {
-                        ArtworkImage(artwork, height: 150)
-                            .accessibilityHidden(true)
-                    } else {
-                        Image(systemName: "music.note")
-                            .resizable()
-                            .frame(width: 100, height: 100)
-                            .accessibilityHidden(true)
-                    }
-                    
-                    VStack(alignment: .leading) {
-                        // Song Title
-                        Text(songTitle)
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .fixedSize(horizontal: false, vertical: true)
-                        
-                        // Album Title
-                        Text(songAlbumTitle)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                            .fixedSize(horizontal: false, vertical: true)
-                        
-                        // Artist Name
-                        Text(songArtistName)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .accessibilityElement(children: .ignore)
-                    .accessibilityLabel("\(songTitle) by \(songArtistName) from \(songAlbumTitle)")
-                }
-                .padding()
+                SongInformationView(songArtwork: $songArtwork, songTitle: $songTitle, songAlbumTitle: $songAlbumTitle, songArtistName: $songArtistName)
+                    .padding( )
                 
                 Spacer()
                 
                 // MARK: - Current Playback/Duration View
-                
-                // Progress View
-                ProgressView(value: player.playbackTime, total: songDuration)
-                    .progressViewStyle(.linear)
-                    .tint(.red.opacity(0.5))
-                    .padding(.horizontal)
-                    .accessibilityHidden(true)
-                
-                // Duration View
-                HStack {
-                    Text(durationStr(from: player.playbackTime))
-                        .font(.caption)
-                    
-                    Spacer()
-                    
-                    Text(durationStr(from: songDuration))
-                        .font(.caption)
-                }
-                .padding(.horizontal)
-                .accessibilityElement(children: .ignore)
+                DurationView(playbackTime: player.playbackTime, songDuration: $songDuration)
                 
                 Spacer()
                 
                 // MARK: - Volume Slider/SKip Button
-                
                 HStack {
                     Image(systemName: "speaker")
                         .accessibilityHidden(true)
@@ -316,15 +261,6 @@ struct PlayBackView: View {
         } catch {
             print(error.localizedDescription)
         }
-    }
-    
-    private func durationStr(from duration: TimeInterval) -> String {
-        let seconds = Int(duration)
-        let minutes = seconds / 60
-        let remainder = seconds % 60
-        
-        // Format the string to ensure two digits for the remainder (seconds)
-        return String(format: "%d:%02d", minutes, remainder)
     }
     
     private func resetTimers() {

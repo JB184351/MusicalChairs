@@ -22,7 +22,6 @@ struct ContentView: View {
     @State private var isLoadingPlaylists = true
     
     private let playlistsKey = "cached_playlists"
-    private let defaultPlaylistName = "Welcome Playlist"
     private var shouldOffersMusicSubscription: Bool {
         guard let currentmusicSubscription = musicSubscription else { return true }
         return !currentmusicSubscription.canPlayCatalogContent
@@ -55,7 +54,7 @@ struct ContentView: View {
                                             .padding(.bottom, 12)
                                     }
                                     .padding(.bottom, 24)
-                                   
+                                    
                                 } actions: {
                                     if shouldOffersMusicSubscription {
                                         Button {
@@ -69,10 +68,8 @@ struct ContentView: View {
                                         .tint(.red)
                                         
                                     } else {
-                                        Button("Create Default Playlist") {
-                                            Task {
-                                                await createDefaultPlaylist()
-                                            }
+                                        Button("Create a Playlist") {
+                                            openMusicApp()
                                         }
                                         .buttonStyle(.borderedProminent)
                                         .tint(.red)
@@ -103,6 +100,11 @@ struct ContentView: View {
             }
         }
         .musicSubscriptionOffer(isPresented: $isSubscriptionSheetShowing, options: offerOptions)
+        .refreshable {
+            isLoadingPlaylists = true
+            await loadPlaylists()
+            isLoadingPlaylists = false
+        }
     }
     
     // MARK: - Initializers
@@ -178,30 +180,9 @@ struct ContentView: View {
         }
     }
     
-    @MainActor
-    private func createDefaultPlaylist() async {
-        do {
-            let url = URL(string: "https://api.music.apple.com/v1/me/library/playlists")!
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            
-            let playlistData = [
-                "attributes": [
-                    "name": defaultPlaylistName,
-                    "description": "Welcome to Musical Chairs!"
-                ]
-            ]
-            
-            request.httpBody = try JSONSerialization.data(withJSONObject: playlistData)
-            
-            let libraryPlaylistRequest = MusicDataRequest(urlRequest: request)
-            _ = try await libraryPlaylistRequest.response()
-            
-            // Reload playlists to include the newly created one
-            await loadPlaylists()
-        } catch {
-            print("Failed to create default playlist: \(error)")
+    private func openMusicApp() {
+        if let musicURL = URL(string: "music://") {
+            openURL(musicURL)
         }
     }
     

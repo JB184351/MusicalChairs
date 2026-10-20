@@ -7,6 +7,7 @@
 
 import SwiftUI
 import MusicKit
+import Combine
 
 struct PlayBackView: View {
     @State var playlist: Playlist?
